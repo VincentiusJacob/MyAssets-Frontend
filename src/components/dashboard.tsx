@@ -10,7 +10,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box, LinearProgress } from "@mui/material";
 import { Line } from "react-chartjs-2";
@@ -395,10 +395,10 @@ function Dashboard() {
             <div className="payment">
               <div className="dashboard-payment-header">
                 <h1> Payment </h1>
-                <a style={{ color: "#1FCB4F" }} href="/Wallet">
+                <Link style={{ color: "#1FCB4F" }} to="/Wallet">
                   {" "}
                   See More{" "}
-                </a>
+                </Link>
               </div>
               <div className="dashboard-payment-container">
                 {paymentData.length > 0 ? (
@@ -464,7 +464,7 @@ function Dashboard() {
               <div className="card-content-element">
                 <div className="card-content-element-icon">
                   <InfoOutlinedIcon style={{ width: "30px", height: "30px" }} />
-                  <a href="/"> About Application </a>
+                  <Link to="/"> About Application </Link>
                 </div>
                 <ChevronRightIcon />
               </div>
@@ -481,10 +481,10 @@ function Dashboard() {
           <div className="transactions">
             <div className="dashboard-transaction-header">
               <h1> Recent Transaction </h1>
-              <a style={{ color: "#1FCB4F" }} href="/Transaction">
+              <Link style={{ color: "#1FCB4F" }} to="/Transaction">
                 {" "}
                 View more{" "}
-              </a>
+              </Link>
             </div>
             <div className="dashboard-transaction-body">
               {transactionData && transactionData.length > 0 ? (

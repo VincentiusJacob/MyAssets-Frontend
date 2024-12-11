@@ -1,7 +1,7 @@
 import { Parallax } from "react-parallax";
 import "./Login.css";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
@@ -70,7 +70,7 @@ function Login() {
           <input type="submit" name="submit" id="submit" value="Continue" />
         </form>
         <p>
-          Create new account? <a href="/register">Register</a>
+          Create new account? <Link to="/register">Register</Link>
         </p>
       </div>
     </Parallax>

@@ -1,7 +1,7 @@
 import { Parallax } from "react-parallax";
 import "./Register.css";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
@@ -87,7 +87,7 @@ function Register() {
           />
         </form>
         <p id="loginhere">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </Parallax>

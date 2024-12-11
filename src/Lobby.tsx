@@ -15,6 +15,7 @@ import messagePage from "../src/assets/chatPage.png";
 import financePic from "./assets/lady.jpg";
 import github from "./assets/githubs.png";
 import ig from "./assets/instagrams.png";
+import { Link } from "react-router-dom";
 interface CircleElement extends HTMLElement {
   x?: number;
   y?: number;
@@ -138,7 +139,7 @@ function Lobby() {
           <li onClick={() => scrollToSection(footerRef)}>Contact Us</li>
         </ul>
         <div className="buttons">
-          <a href="/login"> Login </a>
+          <Link to="/login"> Login </Link>
         </div>
       </div>
 
@@ -151,12 +152,12 @@ function Lobby() {
             Build an Unstoppable Legacy of Wealth and Wisdom
           </h1>
           <div className="getStarted">
-            <a href="/register">
+            <Link to="/register">
               <Button variant="contained">
                 Get Started
                 <ArrowCircleRightIcon fontSize="large" />
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
         <img src={animatedImg} alt="Animated" className="animatedImage" />
