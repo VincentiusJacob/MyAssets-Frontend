@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container-root {
+  display: flex;
+  background-color: #282c35;
+  min-height: 100vh;
+}
+
+.content-section {
+  min-height: 100vh;
+  overflow: hidden;
+  width: 100%;
+}

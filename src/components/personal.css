@@ -1,0 +1,91 @@
+.profileContainer {
+  position: relative;
+  width: 100%;
+  padding: 3rem 0;
+}
+
+.personalContainer {
+  width: 60%;
+  padding: 30px 20px;
+  margin: auto;
+  background-color: #1a1c22;
+  color: white;
+}
+
+.back-btn {
+  position: absolute;
+  left: 10%;
+}
+
+.profile-header {
+  padding: 16px;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.profilePicture {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  width: 150px;
+  border: 1px solid white;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.editIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+.profilePicture:hover .editIcon {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.personal-detail {
+  margin-top: 2rem;
+  padding: 0 20px;
+}
+
+.personal-detail > h2 {
+  font-size: 30px;
+}
+
+.personal-input {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 4em;
+  padding: 10px 0;
+}
+
+.personal-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  color: white;
+}
+
+.personal-input-field input {
+  padding: 16px;
+}
+
+.icons {
+  color: gray;
+}

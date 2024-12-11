@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  cursor: default;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #06002e;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em 4em;
+
+  width: 500px;
+  gap: 2em;
+  background-color: gold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.loginContainer:hover {
+  transform: scale(1.05); /* Slightly zoom in */
+  box-shadow: 0 8px 16px white; /* Increase shadow */
+}
+.form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+}
+
+.nameSection,
+.emailSection,
+.passwordSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+#username,
+#email,
+#password,
+#submit {
+  padding: 12px;
+  border: 2px solid #dcdcdc;
+  background-color: #f5f5dc;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#submit {
+  width: 100%;
+  cursor: pointer;
+}
+
+.google {
+  width: 100%;
+  background-color: white;
+
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+}
+
+.google:hover {
+  transform: scale(1.05);
+}
+.google img {
+  width: 30px;
+  height: 30px;
+}
+.google a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  text-decoration: none;
+  gap: 5em;
+  color: black;
+}
+
+/* Tabs */
+@media (max-width: 1200px) and (max-height: 1367px) {
+  .loginContainer {
+    width: 700px;
+    height: 700px;
+  }
+
+  .loginContainer h2 {
+    font-size: 40px;
+  }
+
+  .loginContainer label {
+    font-size: 24px;
+  }
+
+  #submit {
+    margin-top: 2.5em;
+  }
+
+  .loginContainer p {
+    font-size: 24px;
+  }
+
+  .loginContainer input {
+    height: 60px;
+  }
+
+  .google p {
+    margin-left: 2em;
+  }
+}
+
+/* phone */
+@media (max-width: 450px) and (max-height: 950px) {
+  .loginContainer {
+    width: 400px;
+    height: 700px;
+  }
+
+  .loginContainer h2 {
+    font-size: 25px;
+  }
+
+  .loginContainer label {
+    font-size: 20px;
+  }
+
+  .loginContainer p {
+    font-size: 18px;
+  }
+
+  .google p {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .google img {
+    width: 40px;
+    height: 40px;
+  }
+  .google a {
+    gap: 1em;
+  }
+}

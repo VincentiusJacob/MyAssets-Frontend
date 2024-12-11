@@ -1,0 +1,269 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  padding: 30px 40px;
+}
+
+.numbers {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0;
+}
+
+.datas {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.graphs {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.charts {
+  width: 100%;
+  min-height: 300px;
+  background-color: #1a1c22;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  color: white;
+}
+
+.diagrams {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activity {
+  min-height: 300px;
+  background-color: #1a1c22;
+  padding: 20px;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+}
+
+.activity h1 {
+  color: white;
+}
+
+.payment {
+  width: 50%;
+  background-color: #1a1c22;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  min-height: 395px;
+  gap: 1em;
+}
+
+.error-message {
+  color: white;
+  margin: auto;
+  margin-top: 30%;
+}
+.payment h1 {
+  font-size: 24px;
+}
+
+.dashboard-payment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+
+.dashboard-payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  padding: 4px 8px;
+}
+
+.dashboard-payment-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+}
+
+.dashboard-payment-content-body {
+  display: flex;
+  flex-direction: column;
+  background-color: #282c35;
+  padding: 12px;
+  gap: 8px;
+  width: 100%;
+}
+
+.dashboard-payment-content-body-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-payment-content-body-top p {
+  font-size: 16px;
+}
+.dashboard-payment-header a {
+  text-decoration: none;
+  color: white;
+}
+
+.dashboard-payment-header a:hover {
+  text-decoration: underline;
+}
+.others {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.card {
+  width: 100%;
+  height: 380px;
+  background: linear-gradient(135deg, #fc5c7d, #6a82fb);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  color: white;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.card-header-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid white;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.card-content-element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #282c35;
+  padding: 12px;
+  opacity: 0.8;
+  border-radius: 12px;
+}
+
+.card-content-element:hover {
+  color: #1fcb4f;
+}
+
+.card-content-element a:hover {
+  color: #1fcb4f;
+}
+.card-content-element-icon {
+  display: flex;
+  align-items: center;
+
+  gap: 2em;
+}
+
+.card-content-element a {
+  color: white;
+  text-decoration: none;
+}
+.card-content-element-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.transactions {
+  width: 100%;
+
+  background-color: #1a1c22;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.dashboard-transaction-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  color: white;
+  align-items: center;
+}
+
+.dashboard-transaction-header a {
+  text-decoration: none;
+  color: white;
+}
+
+.dashboard-transaction-header a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-transaction-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.dashboard-transaction-content-container {
+  display: flex;
+  color: white;
+  align-items: center;
+  gap: 12px;
+  background-color: #282c35;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.dashboard-transaction-content-body {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-transaction-content-body-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-transaction {
+  width: 15%;
+  text-align: center;
+}
+
+#category {
+  font-size: 12px;
+}
+.icon-transaction-container {
+  padding: 8px;
+  background-color: #1a1c22;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.dashboard-activity-body {
+  text-align: center;
+}
