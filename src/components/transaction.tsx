@@ -121,7 +121,7 @@ function Transaction() {
           const currentUser = JSON.parse(getUser);
           const currentUsername = currentUser.username;
           const allTransaction = await axios.get(
-            `http://localhost:3001/getTransaction/${currentUsername}`
+            `https://myassets-backend.vercel.app/getTransaction/${currentUsername}`
           );
           console.log(allTransaction.data);
           const formattedTransactions = allTransaction.data.map(
@@ -175,7 +175,7 @@ function Transaction() {
       const currentUser = JSON.parse(getUser);
       try {
         const result = await axios.post(
-          "http://localhost:3001/newTransaction",
+          "https://myassets-backend.vercel.app/newTransaction",
           {
             username: currentUser.username,
             title: transaction.title,
@@ -222,7 +222,7 @@ function Transaction() {
       console.log(currentUser);
       try {
         const result = await axios.post(
-          "http://localhost:3001/newOutstandingPayment",
+          "https://myassets-backend.vercel.app/newOutstandingPayment",
           {
             username: currentUser.username,
             title: payment.title,

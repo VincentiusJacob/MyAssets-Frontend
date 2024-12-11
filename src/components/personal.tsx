@@ -38,7 +38,7 @@ function Personal() {
 
         try {
           const result = await axios.get(
-            `http://localhost:3001/getProfile/${user.email}`
+            `https://myassets-backend.vercel.app/getProfile/${user.email}`
           );
           console.log(result.data);
 
@@ -81,9 +81,12 @@ function Personal() {
         ? new Date(updatedData.dateofbirth).toISOString().split("T")[0]
         : "";
 
-      const result = await axios.put("http://localhost:3001/updateProfile", {
-        data: { ...updatedData, dateofbirth: formattedDateOfBirth },
-      });
+      const result = await axios.put(
+        "https://myassets-backend.vercel.app/updateProfile",
+        {
+          data: { ...updatedData, dateofbirth: formattedDateOfBirth },
+        }
+      );
       console.log(result.data);
     } catch (err: any) {
       console.log(err.message);
@@ -96,7 +99,7 @@ function Personal() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/uploadProfilePicture",
+        "https://myassets-backend.vercel.app/uploadProfilePicture",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -124,9 +127,12 @@ function Personal() {
             ...prev,
             profilepicture: url,
           }));
-          return axios.put("http://localhost:3001/updateProfile", {
-            data: { ...personalData, profilepicture: url },
-          });
+          return axios.put(
+            "https://myassets-backend.vercel.app/updateProfile",
+            {
+              data: { ...personalData, profilepicture: url },
+            }
+          );
         })
         .then((response) => {
           console.log("Profile updated successfully", response.data);

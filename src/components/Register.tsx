@@ -1,8 +1,6 @@
 import { Parallax } from "react-parallax";
-
 import "./Register.css";
 import React, { useState } from "react";
-import googleIcon from "../assets/google.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -16,11 +14,14 @@ function Register() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/auth/register", {
-        username: username,
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "https://myassets-backend.vercel.app/auth/register",
+        {
+          username: username,
+          email: email,
+          password: password,
+        }
+      );
 
       if (response.status === 200) {
         console.log(response.data);
@@ -88,12 +89,6 @@ function Register() {
         <p id="loginhere">
           Already have an account? <a href="/login">Login</a>
         </p>
-        <div className="google-register">
-          <a href="http://localhost:3001/auth/google">
-            <img src={googleIcon} alt="googleIcon" />
-            <p>Sign up with Google</p>
-          </a>
-        </div>
       </div>
     </Parallax>
   );

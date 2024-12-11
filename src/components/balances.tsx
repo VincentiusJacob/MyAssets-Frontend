@@ -22,26 +22,26 @@ function Balances(props: BalancesProps) {
         username = user.username;
         // fetch balance
         const balanceResult = await axios.get(
-          `http://localhost:3001/api/balance/${username}`
+          `https://myassets-backend.vercel.app/api/balance/${username}`
         );
         console.log("balance: ", balanceResult.data);
         setBalance(balanceResult.data.totalBalance);
 
         // fetch invest
         const investResult = await axios.get(
-          `http://localhost:3001/api/invest/${username}`
+          `https://myassets-backend.vercel.app/api/invest/${username}`
         );
         setInvest(investResult.data);
 
         // fetch expense
         const expenseResult = await axios.get(
-          `http://localhost:3001/api/expense/${username}`
+          `https://myassets-backend.vercel.app/api/expense/${username}`
         );
         setExpense(expenseResult.data);
 
         //fetch savings
         const savingsResult = await axios.get(
-          `http://localhost:3001/api/savings/${username}`
+          `https://myassets-backend.vercel.app/api/savings/${username}`
         );
         setSavings(savingsResult.data);
       }

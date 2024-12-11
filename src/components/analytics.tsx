@@ -49,7 +49,7 @@ function Analytics() {
         username = user.username;
         try {
           const responseNetWorth = await axios.get(
-            `http://localhost:3001/api/netWorth/${username}`
+            `https://myassets-backend.vercel.app/api/netWorth/${username}`
           );
           const netWorthData: NetWorthData[] = responseNetWorth.data;
 
@@ -82,7 +82,7 @@ function Analytics() {
           setNetWorthSeries([{ name: "Net Worth", data: netWorthSeriesData }]);
 
           const responseIncome = await axios.get(
-            `http://localhost:3001/api/incomeTrends/${username}`
+            `https://myassets-backend.vercel.app/api/incomeTrends/${username}`
           );
           const incomeData: IncomeTrendData[] = responseIncome.data;
 
@@ -116,7 +116,7 @@ function Analytics() {
           ]);
 
           const response = await axios.get(
-            `http://localhost:3001/api/expenseData/${username}`
+            `https://myassets-backend.vercel.app/api/expenseData/${username}`
           );
           const transactions = response.data;
 
@@ -132,7 +132,7 @@ function Analytics() {
           }
 
           const responseInvestment = await axios.get(
-            `http://localhost:3001/api/investmentData/${username}`
+            `https://myassets-backend.vercel.app/api/investmentData/${username}`
           );
           const investmentData: InvestmentData[] = responseInvestment.data;
 
@@ -147,7 +147,7 @@ function Analytics() {
           }
 
           const responseGrowth = await axios.get(
-            `http://localhost:3001/api/growthIncome/${username}`
+            `https://myassets-backend.vercel.app/api/growthIncome/${username}`
           );
           const growthData = responseGrowth.data;
 

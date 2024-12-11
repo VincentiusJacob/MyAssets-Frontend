@@ -38,7 +38,7 @@ function Wallet() {
           const currentuser = JSON.parse(user);
           const currentUsername = currentuser.username;
           const result = await axios.get(
-            `http://localhost:3001/transactionHistory/${currentUsername}`
+            `https://myassets-backend.vercel.app/transactionHistory/${currentUsername}`
           );
 
           const fetchedData = result.data.data;
@@ -56,7 +56,7 @@ function Wallet() {
           );
 
           const paymentResult = await axios.get(
-            `http://localhost:3001/getPayments/${currentUsername}`
+            `https://myassets-backend.vercel.app/getPayments/${currentUsername}`
           );
           console.log(paymentResult.data);
           setPaymentData(paymentResult.data);

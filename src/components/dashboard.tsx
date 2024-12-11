@@ -213,19 +213,19 @@ function Dashboard() {
         username = parseData.username;
         try {
           const paymentResult = await axios.get(
-            `http://localhost:3001/getPayments/${username}`
+            `https://myassets-backend.vercel.app/getPayments/${username}`
           );
           const filteredPayment = paymentResult.data.slice(0, 4);
           setPaymentData(filteredPayment);
 
           const transactionResult = await axios.get(
-            `http://localhost:3001/getTransaction/${username}`
+            `https://myassets-backend.vercel.app/getTransaction/${username}`
           );
           const filteredTransaction = transactionResult.data.slice(0, 4);
           setTransactionData(filteredTransaction);
 
           const earningResult = await axios.get(
-            `http://localhost:3001/api/growthIncome/${username}`
+            `https://myassets-backend.vercel.app/api/growthIncome/${username}`
           );
           const earningData = earningResult.data;
 
@@ -237,7 +237,7 @@ function Dashboard() {
           setEarning(earningSeries);
 
           const spendingResult = await axios.get(
-            `http://localhost:3001/api/spendingData/${username}`
+            `https://myassets-backend.vercel.app/api/spendingData/${username}`
           );
           const spendingData = spendingResult.data;
 
@@ -264,7 +264,7 @@ function Dashboard() {
           ];
 
           const responseOverview = await axios.get(
-            `http://localhost:3001/api/overview/${username}`
+            `https://myassets-backend.vercel.app/api/overview/${username}`
           );
           const overviewData: IncomeTrendData[] = responseOverview.data;
 
@@ -325,9 +325,12 @@ function Dashboard() {
       const username = user.username;
 
       try {
-        const result = await axios.post(`http://localhost:3001/logout`, {
-          username,
-        });
+        const result = await axios.post(
+          `https://myassets-backend.vercel.app/logout`,
+          {
+            username,
+          }
+        );
 
         if (result.status === 200) {
           localStorage.removeItem("data");

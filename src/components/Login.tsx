@@ -1,5 +1,4 @@
 import { Parallax } from "react-parallax";
-
 import "./Login.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +12,13 @@ function Login() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const result = await axios.post("http://localhost:3001/auth/login", {
-        email: email,
-        password: password,
-      });
+      const result = await axios.post(
+        "https://myassets-backend.vercel.app/auth/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
 
       if (result.status === 200) {
         console.log(result.data.user.username);
