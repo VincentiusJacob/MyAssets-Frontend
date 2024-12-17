@@ -14,6 +14,7 @@ function Register() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      console.log("the username: ", username);
       const response = await axios.post(
         "https://myassets-backend.vercel.app/auth/register",
         {
