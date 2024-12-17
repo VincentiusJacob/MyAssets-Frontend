@@ -126,13 +126,13 @@ function Transaction() {
           console.log(allTransaction.data);
           const formattedTransactions = allTransaction.data.map(
             (transaction: any) => {
-              const date = new Date(transaction.dates);
+              const date = new Date(transaction.date);
 
               const formattedDate = date.toISOString().split("T")[0];
 
               return {
                 ...transaction,
-                dates: formattedDate,
+                date: formattedDate,
                 amount: parseFloat(transaction.amount),
               };
             }
