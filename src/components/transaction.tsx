@@ -170,7 +170,8 @@ function Transaction() {
     setFilteredData(filtered);
   }, [searchQuery, selectedDate, minAmount, maxAmount, transactionData]);
 
-  const submitTransaction = async () => {
+  const submitTransaction = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (getUser) {
       const currentUser = JSON.parse(getUser);
       try {
@@ -216,7 +217,8 @@ function Transaction() {
     }
   };
 
-  const submitPayment = async () => {
+  const submitPayment = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (getUser) {
       const currentUser = JSON.parse(getUser);
       console.log(currentUser);
