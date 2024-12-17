@@ -326,7 +326,7 @@ function Dashboard() {
 
       try {
         const result = await axios.post(
-          `https://myassets-backend.vercel.app/logout`,
+          `https://myassets-backend.vercel.app/auth/logout`,
           {
             username,
           }
