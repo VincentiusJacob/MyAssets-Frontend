@@ -29,7 +29,7 @@ function Register() {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
+        console.log("response data: ", response.data);
         localStorage.setItem("data", JSON.stringify(response.data));
         navigate("/Dashboard", { replace: true });
       } else {
