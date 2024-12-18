@@ -45,7 +45,7 @@ interface Transaction {
   amount: number;
   category: string;
   description: string;
-  dates: string;
+  date: string;
 }
 
 const transactionTypes = {
@@ -149,7 +149,7 @@ function Transaction() {
   useEffect(() => {
     const filtered = transactionData.filter((transaction) => {
       const isDateMatch = selectedDate
-        ? new Date(transaction.dates).toDateString() ===
+        ? new Date(transaction.date).toDateString() ===
           selectedDate.toDateString()
         : true;
       const isSearchMatch = searchQuery
@@ -195,7 +195,7 @@ function Transaction() {
               amount: transaction.amount,
               category: transaction.category,
               description: transaction.description,
-              dates: new Date().toISOString().split("T")[0],
+              date: new Date().toISOString().split("T")[0],
             },
           ]);
 
@@ -641,7 +641,7 @@ function Transaction() {
                           isExpanded || isExpandedPayment ? "black" : "white",
                       }}
                     >
-                      {transaction.dates}
+                      {transaction.date}
                     </td>
                     <td
                       style={{

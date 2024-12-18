@@ -179,7 +179,7 @@ function Wallet() {
                   <p>{formatAmount(income.amount)}</p>
                 </div>
                 <div className="income-date">
-                  <p>{formatDate(income.dates)}</p>
+                  <p>{formatDate(income.date)}</p>
                 </div>
               </div>
             ))}
@@ -198,7 +198,7 @@ function Wallet() {
                   <p>{formatAmount(expense.amount)}</p>
                 </div>
                 <div className="expense-date">
-                  <p>{formatDate(expense.dates)}</p>
+                  <p>{formatDate(expense.date)}</p>
                 </div>
               </div>
             ))}
@@ -217,7 +217,7 @@ function Wallet() {
                   <p>{formatAmount(savings.amount)}</p>
                 </div>
                 <div className="savings-date">
-                  <p>{formatDate(savings.dates)}</p>
+                  <p>{formatDate(savings.date)}</p>
                 </div>
               </div>
             ))}
@@ -236,7 +236,7 @@ function Wallet() {
                   <p>{formatAmount(invest.amount)}</p>
                 </div>
                 <div className="invest-date">
-                  <p>{formatDate(invest.dates)}</p>
+                  <p>{formatDate(invest.date)}</p>
                 </div>
               </div>
             ))}
