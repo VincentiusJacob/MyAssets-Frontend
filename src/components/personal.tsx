@@ -81,26 +81,12 @@ function Personal() {
         ? new Date(updatedData.dateofbirth).toISOString().split("T")[0]
         : "";
 
-      // Get the token from localStorage
-      const token = localStorage.getItem("session-token");
-
-      if (!token) {
-        console.error("User is not authenticated");
-        return;
-      }
-
       const result = await axios.put(
         "https://myassets-backend.vercel.app/updateProfile",
         {
           data: { ...updatedData, dateofbirth: formattedDateOfBirth },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Use the token from localStorage
-          },
         }
       );
-
       console.log(result.data);
     } catch (err: any) {
       console.log(err.message);
