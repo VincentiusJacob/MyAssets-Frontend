@@ -217,6 +217,7 @@ function Dashboard() {
           const userData = await axios.get(
             `https://myassets-backend.vercel.app/getUserProfile/${username}`
           );
+          console.log("user data from backend: ", userData);
           setCurrentUserProfile(userData);
 
           console.log("current user prof: ", currentUserProfile);
