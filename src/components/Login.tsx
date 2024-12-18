@@ -31,6 +31,10 @@ function Login() {
           "data",
           JSON.stringify({ email: email, username: result.data.user.username })
         );
+        localStorage.setItem(
+          "session-token",
+          JSON.stringify(result.data.session)
+        );
         navigate("/Dashboard");
       } else {
         console.log("Error fetching data");

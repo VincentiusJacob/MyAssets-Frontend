@@ -8,7 +8,6 @@ import defaultpic from "../assets/userdefault.png";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../supabaseClient";
 import "./personal.css";
 
 function Personal() {
@@ -82,14 +81,13 @@ function Personal() {
         ? new Date(updatedData.dateofbirth).toISOString().split("T")[0]
         : "";
 
-      const { data: session } = await supabase.auth.getSession();
+      // Get the token from localStorage
+      const token = localStorage.getItem("session-token");
 
-      if (!session || !session.session?.access_token) {
+      if (!token) {
         console.error("User is not authenticated");
         return;
       }
-
-      const token = session.session.access_token;
 
       const result = await axios.put(
         "https://myassets-backend.vercel.app/updateProfile",
@@ -98,7 +96,7 @@ function Personal() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Use the token from localStorage
           },
         }
       );
