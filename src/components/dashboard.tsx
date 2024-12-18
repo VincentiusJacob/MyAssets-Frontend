@@ -219,6 +219,8 @@ function Dashboard() {
           );
           setCurrentUserProfile(userData);
 
+          console.log("current user prof: ", currentUserProfile);
+
           const paymentResult = await axios.get(
             `https://myassets-backend.vercel.app/getPayments/${username}`
           );
@@ -458,7 +460,7 @@ function Dashboard() {
                 className="card-header-picture"
                 style={{
                   backgroundImage: `url(${
-                    currentUserProfile.profilepicture || defaultpic
+                    currentUserProfile?.profilepicture || defaultpic
                   })`,
                 }}
               ></div>
