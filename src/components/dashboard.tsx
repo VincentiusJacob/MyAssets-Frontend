@@ -218,7 +218,7 @@ function Dashboard() {
             `https://myassets-backend.vercel.app/getUserProfile/${username}`
           );
           console.log("user data from backend: ", userData);
-          setCurrentUserProfile(userData);
+          setCurrentUserProfile(userData.data[0]);
 
           console.log("current user prof: ", currentUserProfile);
 
