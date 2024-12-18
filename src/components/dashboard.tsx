@@ -10,6 +10,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
+import defaultpic from "../assets/userdefault.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box, LinearProgress } from "@mui/material";
@@ -201,6 +202,7 @@ function Dashboard() {
   const [overviewSeries, setOverviewSeries] = useState<
     { name: string; data: number[] }[]
   >([]);
+  const [currentUserProfile, setCurrentUserProfile] = useState<any>(null);
   const [overviewCategories, setOverviewCategories] = useState<string[]>([]);
   const getUser = localStorage.getItem("data");
   const parsedCurrentUsername = getUser ? JSON.parse(getUser) : null;
@@ -212,6 +214,11 @@ function Dashboard() {
         const parseData = JSON.parse(getUser);
         username = parseData.username;
         try {
+          const userData = await axios.get(
+            `https://myassets-backend.vercel.app/getUserProfile/${username}`
+          );
+          setCurrentUserProfile(userData);
+
           const paymentResult = await axios.get(
             `https://myassets-backend.vercel.app/getPayments/${username}`
           );
@@ -447,7 +454,14 @@ function Dashboard() {
         <div className="others">
           <div className="card">
             <div className="card-header">
-              <div className="card-header-picture"></div>
+              <div
+                className="card-header-picture"
+                style={{
+                  backgroundImage: `url(${
+                    currentUserProfile.profilepicture || defaultpic
+                  })`,
+                }}
+              ></div>
               <h1> {currentUsername} </h1>
             </div>
             <div className="card-content">
