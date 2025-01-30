@@ -15,3 +15,10 @@
   overflow: hidden;
   width: 100%;
 }
+
+@media (max-width: 450px) and (max-height: 950px) {
+  .container-root {
+    display: flex;
+    flex-direction: column;
+  }
+}

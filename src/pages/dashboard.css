@@ -267,3 +267,94 @@
 .dashboard-activity-body {
   text-align: center;
 }
+
+@media (max-width: 450px) and (max-height: 950px) {
+  .dashboard-container {
+    padding: 20px 10px;
+  }
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .money-container {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .icon-container {
+    background-color: none;
+  }
+
+  .datas {
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+  }
+
+  .diagrams,
+  .others {
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+  }
+
+  .graphs,
+  .activity,
+  .payment {
+    width: 100%;
+  }
+
+  .card {
+    display: none;
+  }
+
+  .transactions {
+    min-height: 395px;
+    width: 100%;
+  }
+
+  .error-message {
+    text-align: center;
+    padding-top: 25%;
+  }
+}
+
+@media (max-width: 1200px) and (max-height: 1367px) {
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 2em;
+    padding: 0;
+  }
+
+  .datas {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2em;
+  }
+
+  .diagrams,
+  .money-container,
+  .activity,
+  .payment,
+  .graphs,
+  .charts {
+    width: 100%;
+  }
+
+  .diagrams {
+    gap: 2em;
+  }
+
+  .others {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .error-message {
+    text-align: center;
+    padding-top: 25%;
+  }
+}

@@ -390,6 +390,10 @@ function Transaction() {
                   width: "300px",
                   height: "60px",
                   color: "#333",
+                  padding: "10px 20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
                 aria-label="add"
               >
@@ -407,6 +411,10 @@ function Transaction() {
                   width: "300px",
                   height: "60px",
                   color: "#333",
+                  padding: "10px 20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
                 aria-label="add"
               >
@@ -672,6 +680,31 @@ function Transaction() {
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="transaction-details-phone-container">
+          {paginatedData.length == 0 ? (
+            <p className="error-message"> No transactions found</p>
+          ) : (
+            paginatedData.map((transaction) => (
+              <div className="transaction-details-phone">
+                <h3> {transaction.title} </h3>
+                <p> {transaction.description} </p>
+                <p>
+                  {" "}
+                  <strong>Category: </strong> {transaction.category}{" "}
+                </p>
+                <p>
+                  {" "}
+                  <strong> Amount: </strong> {transaction.amount}
+                </p>
+                <p>
+                  {" "}
+                  <strong> Date: </strong> {transaction.date}{" "}
+                </p>
+              </div>
+            ))
+          )}
         </div>
       </div>
       <Stack spacing={2} className="pagination">
