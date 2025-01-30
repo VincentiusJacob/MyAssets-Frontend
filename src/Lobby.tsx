@@ -11,7 +11,6 @@ import transactionPage from "../src/assets/transactions.png";
 import dashboardPage from "../src/assets/dashboardPage.png";
 import walletPage from "../src/assets/walletPage.png";
 import analyticsPage from "../src/assets/analyticsPage.png";
-import messagePage from "../src/assets/chatPage.png";
 import financePic from "./assets/lady.jpg";
 import github from "./assets/githubs.png";
 import ig from "./assets/instagrams.png";
@@ -248,16 +247,6 @@ function Lobby() {
               </div>
               <img
                 src={analyticsPage}
-                className="feature-img"
-                alt="moneyManagement"
-              />
-            </div>
-            <div className="feature">
-              <div className="feature-caption">
-                <h2>Messages </h2>{" "}
-              </div>
-              <img
-                src={messagePage}
                 className="feature-img"
                 alt="moneyManagement"
               />

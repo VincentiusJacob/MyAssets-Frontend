@@ -192,6 +192,11 @@
 @media (max-width: 450px) and (max-height: 950px) {
   .bottomPage {
     flex-direction: column;
+    gap: 2em;
+  }
+
+  .wallet {
+    gap: 2rem;
   }
 
   .income,
@@ -202,7 +207,7 @@
   }
 }
 
-@media (max-width: 1200px) and (max-height: 1367px) {
+@media (max-width: 1200px) and (min-width: 451px) and (min-height: 951px) and (max-height: 1367px) {
   .bottomPage {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

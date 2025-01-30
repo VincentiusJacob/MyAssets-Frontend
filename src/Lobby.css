@@ -494,6 +494,10 @@ p {
     height: 100px;
   }
 
+  .features h1 {
+    font-size: 40px;
+  }
+
   .aboutUs {
     width: 100%;
     display: flex;
@@ -560,8 +564,9 @@ p {
     display: flex;
     flex-direction: column;
   }
-  .feature:nth-child(5) {
-    width: 100%;
+
+  .feature-caption h2 {
+    font-size: 30px;
   }
 
   .footer {
