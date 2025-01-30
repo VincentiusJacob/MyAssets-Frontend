@@ -57,6 +57,26 @@ function NavBar() {
     setMenu(newMenu);
   }, [location]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      let username;
+      if (getUser) {
+        const parseData = JSON.parse(getUser);
+        username = parseData.username;
+        try {
+          const userData = await axios.get(
+            `https://myassets-backend.vercel.app/getUserProfile/${username}`
+          );
+          console.log("user data from backend: ", userData);
+          setCurrentUserProfile(userData.data[0]);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
   function handleClick(index: number) {
     const selectedMenu = menuItems[index];
     setMenu(
