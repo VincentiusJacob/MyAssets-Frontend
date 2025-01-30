@@ -8,16 +8,7 @@ body {
   cursor: default;
 }
 
-.container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #06002e;
-}
-
-.loginContainer {
+.registerContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,12 +16,12 @@ body {
 
   width: 500px;
   gap: 2em;
-  background-color: gold;
+  background-color: orange;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
 }
 
-.loginContainer:hover {
+.registerContainer:hover {
   transform: scale(1.05); /* Slightly zoom in */
   box-shadow: 0 8px 16px white; /* Increase shadow */
 }
@@ -54,20 +45,22 @@ body {
 #username,
 #email,
 #password,
-#submit {
+#submit-register {
   padding: 12px;
   border: 2px solid #dcdcdc;
   background-color: #f5f5dc;
   border-radius: 20px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-#submit {
+#submit-register {
   width: 100%;
-  cursor: pointer;
 }
 
-.google {
+#submit-register:hover {
+  background-color: brown;
+}
+
+.google-register {
   width: 100%;
   background-color: white;
 
@@ -76,14 +69,11 @@ body {
   padding: 0.5em 1em;
 }
 
-.google:hover {
-  transform: scale(1.05);
-}
-.google img {
+.google-register img {
   width: 30px;
   height: 30px;
 }
-.google a {
+.google-register a {
   display: flex;
   width: 100%;
   align-items: center;
@@ -92,67 +82,67 @@ body {
   color: black;
 }
 
-/* Tabs */
+.google-register:hover {
+  transform: scale(1.05);
+}
+
+/* phone */
+
 @media (max-width: 1200px) and (max-height: 1367px) {
-  .loginContainer {
-    width: 700px;
-    height: 700px;
+  .registerContainer form label {
+    font-size: 20px;
   }
 
-  .loginContainer h2 {
+  .registerContainer form input {
+    height: 50px;
+  }
+  .registerContainer h2 {
     font-size: 40px;
   }
-
-  .loginContainer label {
-    font-size: 24px;
+  .registerContainer {
+    width: 700px;
+    height: 700px;
+    border-radius: 12px;
   }
 
-  #submit {
-    margin-top: 2.5em;
-  }
-
-  .loginContainer p {
-    font-size: 24px;
-  }
-
-  .loginContainer input {
-    height: 60px;
-  }
-
-  .google p {
-    margin-left: 2em;
+  .google-register a {
+    gap: 10em;
   }
 }
 
 /* phone */
 @media (max-width: 450px) and (max-height: 950px) {
-  .loginContainer {
-    width: 400px;
+  .registerContainer {
+    margin: auto;
+    max-width: 350px;
     height: 700px;
+    border-radius: 12px;
+    color: white;
   }
 
-  .loginContainer h2 {
+  .registerContainer h2 {
     font-size: 25px;
   }
 
-  .loginContainer label {
+  .registerContainer label {
     font-size: 20px;
   }
 
-  .loginContainer p {
+  .registerContainer p {
     font-size: 18px;
+    text-align: center;
   }
 
-  .google p {
+  .google-register p {
     margin-left: 0;
     text-align: center;
   }
 
-  .google img {
+  .google-register img {
     width: 40px;
     height: 40px;
   }
-  .google a {
+  .google-register a {
     gap: 1em;
   }
 }

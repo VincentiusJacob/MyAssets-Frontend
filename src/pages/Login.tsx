@@ -7,6 +7,7 @@ import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorLogin, setErrorLogin] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -37,6 +38,7 @@ function Login() {
         console.log("Error fetching data");
       }
     } catch (err: any) {
+      setErrorLogin(err.message);
       console.log("err: ", err.message);
       console.error("Error:", err);
     }
@@ -75,6 +77,9 @@ function Login() {
           </div>
           <input type="submit" name="submit" id="submit" value="Continue" />
         </form>
+        {errorLogin == "" ? null : (
+          <p className="error-message"> {errorLogin}! </p>
+        )}
         <p>
           Create new account? <Link to="/register">Register</Link>
         </p>

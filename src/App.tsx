@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Lobby from "./Lobby";
-import Register from "./components/Register";
-import NavBar from "./components/navbar";
-import Dashboard from "./components/dashboard";
-import Transaction from "./components/transaction";
-import Wallet from "./components/wallet";
-import Analytics from "./components/analytics";
-import Personal from "./components/personal";
-import Login from "./components/Login";
+import Register from "./pages/Register";
+import NavBar from "./pages/navbar";
+import Dashboard from "./pages/dashboard";
+import Transaction from "./pages/transaction";
+import Wallet from "./pages/wallet";
+import Analytics from "./pages/analytics";
+import Personal from "./pages/personal";
+import Login from "./pages/Login";
 import "./App.css";
-import Authenticated from "./components/authenticated";
+import Authenticated from "./pages/authenticated";
 
 function App() {
   return (
