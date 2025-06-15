@@ -66,7 +66,6 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [change, setChange] = useState<number>(0);
   const [trend, setTrend] = useState<"up" | "down">("up");
-  const [previousAmount, setPreviousAmount] = useState<number>(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -94,7 +93,6 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
               `https://myassets-backend.vercel.app/getTrend/${username}/${name}`
             );
             const prevAmount = trendResponse.data.previousAmount || 0;
-            setPreviousAmount(prevAmount);
 
             // Calculate actual change percentage
             if (prevAmount > 0) {

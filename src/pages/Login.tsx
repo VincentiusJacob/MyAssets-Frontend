@@ -21,7 +21,6 @@ import {
   Email,
   Lock,
   ArrowBack,
-  AttachMoney,
 } from "@mui/icons-material";
 import axios from "axios";
 import "./Login.css";
