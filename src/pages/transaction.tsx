@@ -92,7 +92,6 @@ const transactionTypes = {
 
 function Transaction() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Transaction[]>([]);
   const [minAmount, setMinAmount] = useState<number | "">(0);

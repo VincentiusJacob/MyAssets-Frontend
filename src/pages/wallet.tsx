@@ -447,7 +447,7 @@ function Wallet() {
                 Recent Activity
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                {data.slice(0, 3).map((item, index) => (
+                {data.slice(0, 3).map((item) => (
                   <Box
                     key={item.id}
                     sx={{

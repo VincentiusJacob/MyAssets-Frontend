@@ -23,7 +23,6 @@ import {
   Lock,
   Person,
   ArrowBack,
-  AttachMoney,
   CheckCircle,
 } from "@mui/icons-material";
 import axios from "axios";
