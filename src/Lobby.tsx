@@ -1,304 +1,525 @@
-import Button from "@mui/material/Button";
+"use client";
+
+import type React from "react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Button,
+  TextField,
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Box,
+  IconButton,
+} from "@mui/material";
+import {
+  ArrowForward,
+  AttachMoney,
+  TrendingUp,
+  Security,
+  BarChart,
+  AccountBalanceWallet,
+  CreditCard,
+  PieChart,
+  GitHub,
+  Instagram,
+  Email,
+  Phone,
+} from "@mui/icons-material";
 import "./Lobby.css";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import animatedImg from "../src/assets/animated.png";
-import React, { useEffect, useRef } from "react";
-import MyAssets from "../src/assets/myassetslogo.png";
-import spending from "../src/assets/spending-money.png";
-import tools from "../src/assets/financial-forecast.png";
-import confident from "../src/assets/success.png";
-import transactionPage from "../src/assets/transactions.png";
-import dashboardPage from "../src/assets/dashboardPage.png";
-import walletPage from "../src/assets/walletPage.png";
-import analyticsPage from "../src/assets/analyticsPage.png";
-import financePic from "./assets/lady.jpg";
-import github from "./assets/githubs.png";
-import ig from "./assets/instagrams.png";
-import { Link } from "react-router-dom";
-interface CircleElement extends HTMLElement {
-  x?: number;
-  y?: number;
+import Lady from "./assets/lady.jpg";
+import AnalyticsPage from "./assets/analyticsPage.png";
+import WalletPage from "./assets/walletPage.png";
+import DashboardPage from "./assets/dashboardPage.png";
+import TransactionsPage from "./assets/transactions.png";
+import Logo from "./assets/myassetslogo.png";
+import { useNavigate } from "react-router-dom";
+
+interface VisibilityState {
+  [key: string]: boolean;
 }
 
 function Lobby() {
-  const titleSectionRef = useRef<HTMLDivElement | null>(null);
-  const featuresSectionRef = useRef<HTMLDivElement | null>(null);
-  const aboutUsSectionRef = useRef<HTMLDivElement | null>(null);
-  const footerRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollToSection = (sectionRef: React.RefObject<HTMLElement>) => {
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const navigate = useNavigate();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [getStartedLoading, setGetStartedLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState<VisibilityState>({});
+  const heroRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const coords = { x: 0, y: 0 };
-    const circles = document.querySelectorAll(
-      ".circle"
-    ) as NodeListOf<CircleElement>;
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
 
-    const color = "#ffd700";
-
-    circles.forEach((circle) => {
-      circle.x = 0;
-      circle.y = 0;
-      circle.style.backgroundColor = color;
-    });
-
-    window.addEventListener("mousemove", function (e) {
-      coords.x = e.clientX;
-      coords.y = e.clientY;
-    });
-
-    function animateCircles() {
-      let x = coords.x;
-      let y = coords.y;
-
-      circles.forEach((circle, index) => {
-        circle.style.left = x - 12 + "px";
-        circle.style.top = y - 12 + "px";
-
-        circle.style.transform = `scale(${
-          (circles.length - index) / circles.length
-        })`;
-        circle.style.opacity = `${1 - index / circles.length}`;
-
-        circle.x = x;
-        circle.y = y;
-
-        const nextIndex = index + 1 < circles.length ? index + 1 : 0;
-        const nextCircle = circles[nextIndex] as CircleElement;
-
-        const nextCircleX = nextCircle.x ?? x;
-        const nextCircleY = nextCircle.y ?? y;
-
-        x += (nextCircleX - x) * 0.3;
-        y += (nextCircleY - y) * 0.3;
-      });
-
-      requestAnimationFrame(animateCircles);
-    }
-
-    animateCircles();
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const items = entry.target.querySelectorAll("li");
-          items.forEach((item, index) => {
-            setTimeout(() => {
-              item.classList.add("reveal");
-            }, index * 100);
-          });
-
-          entry.target.classList.add("reveal");
-        } else {
-          const items = entry.target.querySelectorAll("li");
-          items.forEach((item) => {
-            item.classList.remove("reveal");
-          });
-          entry.target.classList.remove("reveal");
-        }
-      });
-    };
-
     const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: entry.isIntersecting,
+          }));
+        });
+      },
+      { threshold: 0.1 }
     );
 
-    const revealElements = document.querySelectorAll(".reveal-on-scroll");
+    const sections = document.querySelectorAll("[data-animate]");
+    sections.forEach((section) => observer.observe(section));
 
-    revealElements.forEach((element) => {
-      observer.observe(element);
-    });
-
-    return () => {
-      revealElements.forEach((element) => {
-        observer.unobserve(element);
-      });
-    };
+    return () => observer.disconnect();
   }, []);
 
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="landingPage">
-      <div className="navBar">
-        <img src={MyAssets} id="logo" alt="myAssets" />
-        <ul>
-          <li onClick={() => scrollToSection(titleSectionRef)}>Home</li>
-          <li onClick={() => scrollToSection(featuresSectionRef)}>Features</li>
-          <li onClick={() => scrollToSection(aboutUsSectionRef)}>About Us</li>
-          <li onClick={() => scrollToSection(footerRef)}>Contact Us</li>
-        </ul>
-        <div className="buttons">
-          <Link to="/login"> Login </Link>
-        </div>
+    <div className="landing-page">
+      {/* Animated Background */}
+      <div className="animated-background">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+        <div className="blob blob-3"></div>
       </div>
 
-      <div className="titleSection" ref={titleSectionRef}>
-        <div className="text">
-          <h1 id="company-name"> MyAssets</h1>
-          <h1>
-            {" "}
-            Take Control of Your Financial Journey: Master Your Investments, and
-            Build an Unstoppable Legacy of Wealth and Wisdom
-          </h1>
-          <div className="getStarted">
-            <Link to="/register">
-              <Button variant="contained">
-                Get Started
-                <ArrowCircleRightIcon fontSize="large" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-        <img src={animatedImg} alt="Animated" className="animatedImage" />
-      </div>
-      <div className="home-content">
-        <div className="aboutUs reveal-on-scroll" ref={aboutUsSectionRef}>
-          <div className="aboutUs-texts">
-            <a
-              id="aboutus-pic"
-              href="https://www.freepik.com/free-photo/lady-is-using-mobile-telephone-with-her-business-report-document_3805540.htm#fromView=search&page=1&position=1&uuid=10dfb10b-14ae-4947-8b59-56f2e28bc493"
+      {/* Custom Cursor */}
+      <div
+        className="custom-cursor"
+        style={{
+          left: mousePosition.x - 8,
+          top: mousePosition.y - 8,
+        }}
+      />
+
+      {/* Navigation */}
+      <AppBar position="fixed" className="navbar">
+        <Toolbar>
+          <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
+            <img src={Logo} width={70} height={70} />
+            <Typography variant="h5" component="div" className="logo-text">
+              MyAssets
+            </Typography>
+          </Box>
+
+          <Box
+            className="nav-links"
+            sx={{ display: { xs: "none", md: "flex" } }}
+          >
+            <Button
+              color="inherit"
+              onClick={() => scrollToSection(heroRef)}
+              className="nav-button"
             >
-              <img src={financePic} />
-            </a>
-            <h2>
-              {" "}
-              MyAssets provides an all-in-one solution for managing your money
-              with ease. The platform offers powerful tools to help you track
-              expenses, monitor income, and gain valuable insights through
-              interactive charts and analytics. Whether you're budgeting for the
-              future or analyzing spending habits, the user-friendly interface
-              makes it simple to stay in control of your finances. Make informed
-              financial decisions with our comprehensive financial management
-              app.
-            </h2>
-          </div>
-          <div className="aboutUsSections">
-            <div className="aboutUs-data">
-              <img src={spending} id="icon-img" />
-              <h2>
-                {" "}
-                Simplifies spending tracking with real-time updates and easy
-                categorization.
-              </h2>
-            </div>
-            <div className="aboutUs-data">
-              <img src={tools} id="icon-img" />
-              <h2>
-                {" "}
-                Offers personalized insights and actionable recommendations.
-              </h2>
-            </div>
-            <div className="aboutUs-data">
-              <img src={confident} id="icon-img" />
-              <h2>
-                {" "}
-                Boosts your confidence by making financial management intuitive
-                and accessible.
-              </h2>
-            </div>
-          </div>
-        </div>
-        <div className="features reveal-on-scroll" ref={featuresSectionRef}>
-          <h1>Key Features</h1>
-          <section className="featuresSection">
-            <div className="feature">
-              <div className="feature-caption">
-                <h2> Dashboard</h2>{" "}
-              </div>
-              <img
-                src={dashboardPage}
-                className="feature-img"
-                alt="moneyManagement"
-              />
-            </div>
-            <div className="feature">
-              <div className="feature-caption">
-                <h2>Transactions</h2>{" "}
-              </div>
-              <img
-                src={transactionPage}
-                className="feature-img"
-                alt="moneyManagement"
-              />
-            </div>
-            <div className="feature">
-              <div className="feature-caption">
-                <h2>Wallet</h2>{" "}
-              </div>
-              <img
-                src={walletPage}
-                className="feature-img"
-                alt="moneyManagement"
-              />
-            </div>
-            <div className="feature">
-              <div className="feature-caption">
-                <h2> Analytics </h2>{" "}
-              </div>
-              <img
-                src={analyticsPage}
-                className="feature-img"
-                alt="moneyManagement"
-              />
-            </div>
-          </section>
-        </div>
-      </div>
-      <div className="footer" ref={footerRef}>
-        <div className="footer-left">
-          <div className="footer-left-title">
-            <h2> MyAssets</h2>
-          </div>
-          <div className="footer-left-profile">
-            <div className="email">
-              <p> Email</p>
-              <p> icencodes@gmail.com</p>
-            </div>
-            <div className="phone">
-              <p> Phone Number</p>
-              <p> (+62) 812-9203-9645 </p>
-            </div>
-          </div>
-          <div className="footer-left-socials">
-            <h2> Follow Me</h2>
-            <div className="socialMedia">
-              <a href="https://github.com/VincentiusJacob">
-                {" "}
-                <img src={github} />
-              </a>
-              <a href="https://www.instagram.com/vincentiusjg?igsh=MXBwbzlkOHc1d3Zzdw==">
-                {" "}
-                <img src={ig} />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="footer-right">
-          <h1>
-            {" "}
-            Stay Updated! Enter your email to receive the latest news and
-            updates from us.
-          </h1>
-          <div className="footer-right-input">
-            <input type="email" placeholder="Email Address..." name="email" />
-            <button> Send </button>
-          </div>
-        </div>
-      </div>
+              Home
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => scrollToSection(featuresRef)}
+              className="nav-button"
+            >
+              Features
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => scrollToSection(aboutRef)}
+              className="nav-button"
+            >
+              About
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => scrollToSection(contactRef)}
+              className="nav-button"
+            >
+              Contact
+            </Button>
+          </Box>
 
-      {[...Array(20)].map((_, index) => (
-        <div key={index} className="circle"></div>
-      ))}
+          <Button
+            variant="contained"
+            className="login-button"
+            onClick={() => {
+              setLoginLoading(true);
+              setTimeout(() => {
+                navigate("/login");
+                setLoginLoading(false);
+              }, 1500);
+            }}
+            disabled={loginLoading}
+          >
+            {loginLoading ? (
+              <Box display="flex" alignItems="center" gap={1}>
+                <div className="spinner"></div>
+                Loading...
+              </Box>
+            ) : (
+              "Login"
+            )}
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      {/* Hero Section */}
+      <section ref={heroRef} className="hero-section">
+        <Container maxWidth="lg">
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} lg={6}>
+              <Box className="hero-content">
+                <Typography variant="h1" className="hero-title">
+                  MyAssets
+                </Typography>
+                <Typography variant="h3" className="hero-subtitle">
+                  Take Control of Your Financial Journey: Master Your
+                  Investments, and Build an{" "}
+                  <span className="highlight">Unstoppable Legacy</span> of
+                  Wealth and Wisdom
+                </Typography>
+                <Button
+                  variant="contained"
+                  size="large"
+                  className="cta-button"
+                  endIcon={!getStartedLoading && <ArrowForward />}
+                  onClick={() => {
+                    setGetStartedLoading(true);
+                    setTimeout(() => {
+                      navigate("/register");
+                      setGetStartedLoading(false);
+                    }, 1500);
+                  }}
+                  disabled={getStartedLoading}
+                >
+                  {getStartedLoading ? (
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <div className="spinner"></div>
+                      Getting Started...
+                    </Box>
+                  ) : (
+                    "Get Started"
+                  )}
+                </Button>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} lg={6}>
+              <Box className="hero-card-container">
+                <Card className="hero-card">
+                  <CardContent>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb={3}
+                    >
+                      <Typography variant="h6">Portfolio Overview</Typography>
+                      <TrendingUp className="trend-icon" />
+                    </Box>
+                    <Box mb={2}>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mb={1}
+                      >
+                        <Typography color="textSecondary">
+                          Total Balance
+                        </Typography>
+                        <Typography variant="h4" className="balance-amount">
+                          $124,567
+                        </Typography>
+                      </Box>
+                      <Box className="progress-bar">
+                        <Box className="progress-fill"></Box>
+                      </Box>
+                    </Box>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Card className="mini-card">
+                          <CardContent>
+                            <Typography variant="caption" color="textSecondary">
+                              Stocks
+                            </Typography>
+                            <Typography variant="h6" className="stocks-amount">
+                              $67,890
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Card className="mini-card">
+                          <CardContent>
+                            <Typography variant="caption" color="textSecondary">
+                              Bonds
+                            </Typography>
+                            <Typography variant="h6" className="bonds-amount">
+                              $56,677
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+      </section>
+
+      {/* About Section */}
+      <section
+        ref={aboutRef}
+        id="about"
+        data-animate
+        className={`about-section ${isVisible.about ? "visible" : ""}`}
+      >
+        <Container maxWidth="lg">
+          <Grid container spacing={6} alignItems="center" sx={{ mb: 8 }}>
+            <Grid item xs={12} lg={6}>
+              <Box className="about-image-container">
+                <img
+                  src={Lady}
+                  alt="Financial Management"
+                  className="about-image"
+                />
+                <Box className="floating-icon">
+                  <BarChart />
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} lg={6}>
+              <Box className="about-content">
+                <Typography variant="h2" className="section-title">
+                  All-in-One Financial Solution
+                </Typography>
+                <Typography variant="h6" className="section-description">
+                  MyAssets provides an all-in-one solution for managing your
+                  money with ease. The platform offers powerful tools to help
+                  you track expenses, monitor income, and gain valuable insights
+                  through interactive charts and analytics.
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={4}>
+            {[
+              {
+                icon: TrendingUp,
+                title: "Smart Tracking",
+                description:
+                  "Simplifies spending tracking with real-time updates and easy categorization.",
+                color: "blue",
+              },
+              {
+                icon: Security,
+                title: "Personalized Insights",
+                description:
+                  "Offers personalized insights and actionable recommendations.",
+                color: "slate",
+              },
+              {
+                icon: AttachMoney,
+                title: "Confidence Building",
+                description:
+                  "Boosts your confidence by making financial management intuitive and accessible.",
+                color: "green",
+              },
+            ].map((feature, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card className={`feature-card feature-card-${feature.color}`}>
+                  <CardContent>
+                    <Box
+                      className={`feature-icon feature-icon-${feature.color}`}
+                    >
+                      <feature.icon />
+                    </Box>
+                    <Typography variant="h5" className="feature-title">
+                      {feature.title}
+                    </Typography>
+                    <Typography className="feature-description">
+                      {feature.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </section>
+
+      {/* Features Section */}
+      <section
+        ref={featuresRef}
+        id="features"
+        data-animate
+        className={`features-section ${isVisible.features ? "visible" : ""}`}
+      >
+        <Container maxWidth={false}>
+          <Box textAlign="center" mb={8}>
+            <Typography variant="h2" className="section-title">
+              Key Features
+            </Typography>
+            <Typography variant="h6" className="section-description">
+              Discover the powerful tools that make MyAssets the ultimate
+              financial management platform
+            </Typography>
+          </Box>
+
+          <Grid container spacing={3} className="features-container">
+            {[
+              {
+                icon: BarChart,
+                title: "Dashboard",
+                description: "Comprehensive overview of your financial health",
+                color: "blue",
+                image: DashboardPage,
+              },
+              {
+                icon: CreditCard,
+                title: "Transactions",
+                description: "Track and categorize all your transactions",
+                color: "green",
+                image: TransactionsPage,
+              },
+              {
+                icon: AccountBalanceWallet,
+                title: "Wallet",
+                description: "Manage multiple accounts and payment methods",
+                color: "slate",
+                image: WalletPage,
+              },
+              {
+                icon: PieChart,
+                title: "Analytics",
+                description:
+                  "Deep insights with interactive charts and reports",
+                color: "indigo",
+                image: AnalyticsPage,
+              },
+            ].map((feature, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Card
+                  className={`main-feature-card main-feature-card-${feature.color}`}
+                >
+                  <CardContent>
+                    <Box
+                      className={`main-feature-icon main-feature-icon-${feature.color}`}
+                    >
+                      <feature.icon />
+                    </Box>
+                    <Typography variant="h4" className="main-feature-title">
+                      {feature.title}
+                    </Typography>
+                    <Typography className="main-feature-description">
+                      {feature.description}
+                    </Typography>
+                    <Box className="feature-preview-large">
+                      <img
+                        src={feature.image}
+                        alt={`${feature.title} Preview`}
+                        className="preview-image"
+                      />
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </section>
+
+      {/* Footer */}
+      <footer
+        ref={contactRef}
+        id="contact"
+        data-animate
+        className={`footer-section ${isVisible.contact ? "visible" : ""}`}
+      >
+        <Container maxWidth="lg">
+          <Grid container spacing={8}>
+            <Grid item xs={12} lg={6}>
+              <Box className="footer-content">
+                <Typography variant="h3" className="footer-title">
+                  MyAssets
+                </Typography>
+                <Typography variant="h6" className="footer-description">
+                  Empowering your financial future with intelligent tools and
+                  insights.
+                </Typography>
+
+                <Box className="contact-info">
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Email className="contact-icon" />
+                    <Typography>icencodes@gmail.com</Typography>
+                  </Box>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Phone className="contact-icon" />
+                    <Typography>(+62) 812-9203-9645</Typography>
+                  </Box>
+                </Box>
+
+                <Box className="social-section">
+                  <Typography variant="h6" className="social-title">
+                    Follow Me
+                  </Typography>
+                  <Box className="social-links">
+                    <IconButton
+                      href="https://github.com/VincentiusJacob"
+                      className="social-button"
+                    >
+                      <GitHub />
+                    </IconButton>
+                    <IconButton
+                      href="https://www.instagram.com/vincentiusjg"
+                      className="social-button"
+                    >
+                      <Instagram />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} lg={6}>
+              <Box className="newsletter-section">
+                <Typography variant="h4" className="newsletter-title">
+                  Stay Updated!
+                </Typography>
+                <Typography variant="h6" className="newsletter-description">
+                  Enter your email to receive the latest news and updates from
+                  us.
+                </Typography>
+
+                <Box className="newsletter-form">
+                  <TextField
+                    type="email"
+                    placeholder="Email Address..."
+                    variant="outlined"
+                    className="email-input"
+                    fullWidth
+                  />
+                  <Button variant="contained" className="send-button">
+                    Send
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+      </footer>
     </div>
   );
 }

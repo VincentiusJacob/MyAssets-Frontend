@@ -1,223 +1,367 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Animation Keyframes */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
 }
 
-.wallet {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  padding: 20px 40px;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.MuiTableCell-root {
-  padding: 16px;
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
 }
 
-.MuiLinearProgress-root {
-  border-radius: 5px;
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.MuiTableRow-root:hover {
-  background-color: #f5f5f5;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.payments {
-  width: 100%;
-  background-color: #1a1c22;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 20px;
-  gap: 2em;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.status {
-  background-color: #fa8072;
-  padding: 4px;
-  text-align: center;
-
-  color: black;
-  border-radius: 12px;
-}
-.payments > h1 {
-  font-size: 30px;
-  color: white;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.table-row {
-  margin-bottom: 8px;
-}
-
-.table-row {
-  padding: 10px;
-}
-
-.payment-progress {
-  display: flex;
-  align-items: center;
-  width: 60%;
-  gap: 2em;
-}
-.payment-detail {
-  display: flex;
-  background-color: #1a1c22;
-  padding: 8px;
+::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.3);
   border-radius: 4px;
-  align-items: center;
-  justify-content: space-between;
-  color: #ffc107;
 }
 
-.payment-detail > h2 {
-  font-size: 20px;
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #2563eb);
+  border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
-.bottomPage {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #1d4ed8);
 }
 
-.income,
-.expenses,
-.savings,
-.investment {
-  display: flex;
-  flex-direction: column;
-  background-color: #1a1c22;
-  padding: 8px;
-  color: white;
-  height: 50vh;
-  border-radius: 8px;
-  width: 300px;
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
-.income:hover,
-.expenses:hover,
-.savings:hover,
-.investment:hover,
-.payments:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 15px #1fcb4f;
+/* Card Hover Effects */
+.wallet-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#title-income {
-  max-width: 100px;
+.wallet-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15);
 }
 
-.income-header,
-.expense-header,
-.savings-header,
-.invest-header {
-  position: sticky;
-  z-index: 1;
+/* Payment Progress Animation */
+.payment-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-progress::before {
+  content: "";
+  position: absolute;
   top: 0;
-  display: flex;
-
-  color: white;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-
-  padding: 1em 0 1.5em 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
 }
 
-.income-header > h1,
-.expense-header > h1,
-.savings-header > h1,
-.invest-header > h1 {
-  font-size: 30px;
+/* Category Icon Animation */
+.category-icon {
+  transition: all 0.3s ease;
 }
 
-.income-content,
-.expense-content,
-.savings-content,
-.invest-content {
-  display: flex;
-  flex-direction: column;
-  height: 40vh;
-
-  padding: 12px 12px 0px 12px;
-  overflow-y: auto;
-  gap: 2em;
+.category-icon:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
-.income-content-detail,
-.expense-content-detail,
-.savings-content-detail,
-.invest-content-detail {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  background-color: #1fcb4f;
-  color: #333;
-
-  gap: 4px;
+/* Status Chip Animation */
+.status-chip {
+  animation: fadeIn 0.5s ease-out;
+  transition: all 0.3s ease;
 }
 
-.savings-content-detail {
-  background-color: blue;
-  color: white;
+.status-chip:hover {
+  transform: scale(1.05);
 }
 
-.invest-content-detail {
-  background-color: #ffc107;
-}
-.expense-content-detail {
-  background-color: red;
-  color: white;
+/* Loading Animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
 }
 
-.income-title-amount,
-.expense-title-amount,
-.savings-title-amount,
-.invest-title-amount {
-  display: flex;
-  justify-content: space-between;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.income-date > p,
-.expense-date > p,
-.savings-date > p,
-.invest-date > p {
-  font-size: 14px;
-  text-align: right;
+/* Glassmorphism Effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 450px) and (max-height: 950px) {
-  .bottomPage {
-    flex-direction: column;
-    gap: 2em;
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #1e293b, #64748b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Interactive Elements */
+.interactive-element {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.interactive-element:hover {
+  transform: translateY(-2px);
+}
+
+.interactive-element:active {
+  transform: translateY(0);
+}
+
+/* Focus States */
+.focusable:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .wallet-card {
+    margin-bottom: 1rem;
   }
 
-  .wallet {
+  .payment-item {
+    padding: 1rem;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Touch-friendly sizing */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Desktop Optimizations */
+@media (min-width: 1025px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
   }
 
-  .income,
-  .expenses,
-  .savings,
-  .investment {
-    width: 100%;
+  .wallet-container {
+    padding: 2rem 3rem;
   }
 }
 
-@media (max-width: 1200px) and (min-width: 451px) and (min-height: 951px) and (max-height: 1367px) {
-  .bottomPage {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2em;
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .glass-card {
+    border: 2px solid #000;
+    background: rgba(255, 255, 255, 0.95);
   }
 
-  .income,
-  .expenses,
-  .savings,
-  .investment {
-    width: 100%;
+  .category-icon {
+    filter: contrast(1.5);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .wallet-card:hover {
+    transform: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .glass-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #f1f5f9, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .wallet-container {
+    background: white !important;
+  }
+
+  .glass-card {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+
+  .interactive-element:hover {
+    transform: none !important;
+  }
+}
+
+/* Accessibility Improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #3b82f6;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Custom Selection */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #1e293b;
+}
+
+::-moz-selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #1e293b;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance Optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Container Queries Support */
+@container (max-width: 400px) {
+  .payment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }

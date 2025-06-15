@@ -1,504 +1,199 @@
-.transaction-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 3rem 0;
-  height: auto;
-
-  align-items: center;
-  overflow-y: auto;
-  gap: 3em;
+/* Custom DatePicker Styling */
+.react-datepicker-wrapper {
+  width: 100% !important;
 }
 
-.input-transaction {
-  width: 100%;
-  color: white;
-  padding: 0 7rem;
-  display: flex;
-  justify-content: space-between;
+.react-datepicker__input-container input {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.5) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  font-size: 14px !important;
+  color: #1e293b !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
 }
 
-form.create-transaction {
-  position: relative;
-  width: 45%;
-  background: #fff;
-  padding: 15px;
-  border-radius: 7px;
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-  align-items: center;
-  background-color: black;
-  box-shadow: 0 1px 5px rgb(138, 137, 137);
+.react-datepicker__input-container input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
-form.create-transaction input,
-form.create-transaction textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 1.2em;
-  font-family: inherit;
-  resize: none;
+.react-datepicker__input-container input::placeholder {
+  color: #94a3b8 !important;
 }
 
-form.create-transaction textarea {
-  min-height: 100px;
+/* DatePicker Popup Styling */
+.react-datepicker {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+  font-family: inherit !important;
 }
 
-.timeFilter {
-  width: 80%;
+.react-datepicker__header {
+  background: rgba(59, 130, 246, 0.1) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.3) !important;
+  border-radius: 16px 16px 0 0 !important;
+  padding: 16px !important;
 }
 
-.timeContainer {
-  width: 60%;
-  display: flex;
-  gap: 3rem;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
+.react-datepicker__current-month {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
 }
 
-.timeContainer > li {
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-size: 1em;
-  color: black;
-  padding: 10px 40px;
-  border-radius: 12px;
-  list-style-type: none;
-  background-color: #f5ba13;
-  text-align: center;
+.react-datepicker__day-name {
+  color: #64748b !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  margin: 4px !important;
 }
 
-.transaction-description {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  width: 100%;
-  text-align: left;
+.react-datepicker__day {
+  color: #1e293b !important;
+  border-radius: 8px !important;
+  margin: 2px !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  transition: all 0.2s ease !important;
 }
 
-label {
-  font-size: 20px;
+.react-datepicker__day:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
 }
 
-.close-icon {
-  align-self: flex-end;
+.react-datepicker__day--selected {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: white !important;
 }
 
-.hidden-transaction,
-.hidden-payment {
-  position: absolute;
-  width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-
-  top: 32%;
-  left: auto;
-  background-color: #333;
-  color: white;
-  z-index: 9999;
-  padding: 24px;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
-  border-radius: 10px;
+.react-datepicker__day--keyboard-selected {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #1e293b !important;
 }
 
-#title-transaction {
-  width: 100%;
+.react-datepicker__day--outside-month {
+  color: #cbd5e1 !important;
 }
 
-.title-amount {
-  display: flex;
-  justify-content: space-between;
-  gap: 4em;
+.react-datepicker__navigation {
+  top: 20px !important;
 }
 
-.title,
-.amount {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 1em;
-}
-.hidden-transaction form,
-.hidden-payment form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
+.react-datepicker__navigation--previous {
+  left: 20px !important;
+  border-right-color: #64748b !important;
 }
 
-.hidden-transaction form input,
-.hidden-payment form input {
-  padding: 8px;
-  text-align: left;
+.react-datepicker__navigation--next {
+  right: 20px !important;
+  border-left-color: #64748b !important;
 }
 
-.hidden-transaction form textarea,
-.hidden-payment form textarea {
-  padding: 8px;
-  height: 70px;
-}
-.hidden-input {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  justify-content: start;
-  width: 100%;
-  gap: 1em;
-  margin-bottom: 1em;
+.react-datepicker__navigation:hover *::before {
+  border-color: #3b82f6 !important;
 }
 
-.category {
-  width: 100%;
+/* Custom Scrollbar for Modal */
+.MuiCard-root::-webkit-scrollbar {
+  width: 6px;
 }
 
-.category-name {
-  width: 90%;
-  background: #f5ba13;
-  color: #fff;
-  border: none;
-  padding: 12px;
-  border-radius: 50%;
-  width: 100%;
-  height: 48px;
-  cursor: pointer;
+.MuiCard-root::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.3);
+  border-radius: 3px;
 }
 
-.dropdown {
-  width: 10%;
+.MuiCard-root::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #2563eb);
+  border-radius: 3px;
 }
 
-.pop {
-  width: 100%;
+.MuiCard-root::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #1d4ed8);
 }
 
-.search-icon {
-  width: 20%;
-}
-
-.transactionsContainer {
-  width: 90%;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.other-tools {
-  display: flex;
-  gap: 1em;
-  align-items: center;
-}
-
-.create {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.transactions-tools {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3em;
-  padding: 20px 0;
-}
-
-.filter-title,
-.sort-transaction,
-.search-transaction {
-  display: flex;
-  gap: 10px;
-  color: #333;
-  z-index: 1;
-  background-color: #1fcb4f;
-  padding: 10px;
-}
-
-.filter-title:hover,
-.sort-transaction:hover,
-.search-transaction:hover {
-  box-shadow: 0 0 15px rgba(52, 152, 219, 0.75);
-  transform: translateY(-2px);
-}
-
-.filter-transaction {
-  position: relative;
-  display: flex;
-  z-index: 10;
-}
-
-.filters {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  color: white;
-  gap: 2em;
-  background-color: black;
-
-  top: 50px;
-  left: -50px;
-}
-
-.filter-details {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.filter-title {
-  background-color: #1fcb4f;
-  color: #333;
-  padding: 10px;
-}
-
-.sort-transaction {
-  position: relative;
-  z-index: 5;
-}
-
-.sorts {
-  display: flex;
-  position: absolute;
-  gap: 16px;
-  padding: 8px;
-  background-color: black;
-  top: 50px;
-  left: -50px;
-}
-
-.amount-filters {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.amount-filters input {
-  padding: 4px;
-  background-color: #333;
-  color: white;
-}
-
-.asc,
-.des {
-  padding: 12px;
-  background-color: #1fcb4f;
-  display: flex;
-  align-items: center;
-  color: #333;
-  border-radius: 12px;
-}
-
-.asc > h1,
-.des > h1 {
-  font-size: 16px;
-}
-
-.date-picker {
-  text-align: center;
-  display: flex;
-  margin: auto;
-  width: 100%;
-  z-index: 100;
-  background-color: #333;
-  padding: 8px;
-}
-
-#amount {
-  text-align: center;
-  padding: 8px;
-  background-color: #333;
-}
-
-#submitTransaction,
-#submitPayment {
-  text-align: center;
-  background-color: #f5ba13;
-  border-radius: 12px;
-  padding: 8px;
-}
-
-.filter-date,
-.filter-amount {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 80px;
-  padding: 8px;
-  align-items: center;
-  border-radius: 12px;
-  background-color: #1fcb4f;
-  color: #333;
-}
-
-.add-btn {
-  display: flex;
-  gap: 2em;
-}
-
-.add-btn:hover {
-  box-shadow: 0 0 15px rgba(52, 152, 219, 0.75);
-  transform: translateY(-3px);
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  background-color: white;
-  justify-content: space-between;
-}
-
-.prev,
-.next {
-  padding: 8px;
-  background-color: #f5ba13;
-}
-
-.transaction-details {
-  width: 100%;
-  margin: 0 auto;
-  border-collapse: collapse;
-}
-
-.transaction-details tbody {
-  height: auto;
-  overflow-y: auto;
-
-  width: 100%;
-}
-
-.transaction-details table {
-  width: 100%;
-
-  border-collapse: collapse;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.transaction-details td {
-  padding: 40px 12px;
-
-  text-align: center;
-  color: black;
-}
-
-.transaction-details th {
-  font-weight: bold;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-
-  padding: 20px 12px;
-}
-
-.transaction-type {
-  padding: 4px;
-}
-
-.transaction-details-phone-container {
-  display: none;
-}
-
-@media (max-width: 450px) and (max-height: 950px) {
-  .transaction-container {
-    padding: 2em;
+/* Animation Keyframes */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
   }
-
-  .transactions-tools {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .transaction-container {
-    width: 100%;
-    padding: 0;
-    padding-top: 2em;
-  }
-
-  .create {
-    width: 100%;
-  }
-
-  .add-btn {
-    flex: 1;
-  }
-
-  .transaction-details {
-    display: none;
-  }
-
-  .transaction-details-phone-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    width: 100%;
-  }
-
-  .transaction-details-phone {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border: 1px solid white;
-    color: white;
-  }
-
-  .pagination {
-    display: none;
-  }
-
-  .hidden-transaction,
-  .hidden-payment {
-    width: 350px;
-    top: 20%;
-    padding: 2em;
-  }
-
-  #title-transaction,
-  #amountTransaction {
-    width: 100%;
-  }
-
-  .title-amount {
-    gap: 2em;
-    align-items: center;
-  }
-
-  .sorts {
-    left: -100%;
-  }
-
-  .search-transaction form {
-    max-width: 150px;
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
   }
 }
 
-@media (max-width: 1200px) and (min-width: 451px) and (min-height: 951px) and (max-height: 1367px) {
-  .transactions-tools {
-    display: flex;
-    flex-direction: column;
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .react-datepicker {
+    width: 100% !important;
+    max-width: 320px !important;
   }
 
-  .add-btn {
-    flex: 1;
+  .react-datepicker__input-container input {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Focus and Active States */
+.MuiButton-root:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:focus-within {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 0px, #e2e8f0 40px, #f1f5f9 80px);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Smooth Transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease !important;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .MuiCard-root {
+    border: 2px solid #000 !important;
   }
 
-  .other-tools,
-  .create {
-    width: 100%;
+  .MuiButton-root {
+    border: 2px solid currentColor !important;
   }
+}
 
-  .search-transaction {
-    flex: 1;
-  }
-
-  .search-transaction form {
-    flex: 1;
-  }
-
-  .sorts {
-    left: -100%;
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
