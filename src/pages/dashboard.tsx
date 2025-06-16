@@ -288,13 +288,18 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
           {amount === 0 ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Typography
-                variant="caption"
-                sx={{ color: "#94a3b8", fontSize: "0.75rem" }}
+                variant="body2"
+                sx={{ color: "#64748b", fontWeight: 600, fontSize: "0.875rem" }}
               >
-                {name === "Balance" && "Add funds to get started"}
-                {name === "Investment" && "Start investing today"}
-                {name === "Expenses" && "No expenses recorded"}
-                {name === "Savings" && "Begin your savings journey"}
+                {amount > 0 && name}
+                {amount === 0 && name === "Balance" && "Balance"}
+                {amount === 0 &&
+                  name === "Investment" &&
+                  "Start Investing Today"}
+                {amount === 0 && name === "Expenses" && "No Expenses Recorded"}
+                {amount === 0 &&
+                  name === "Savings" &&
+                  "Begin Your Savings Journey"}
               </Typography>
             </Box>
           ) : (
