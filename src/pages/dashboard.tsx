@@ -106,29 +106,21 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
 
           // Handle different API response structures
           if (name === "Balance") {
-            currentAmount =
-              response.data.balance ||
-              response.data.amount ||
-              response.data.total ||
-              0;
+            currentAmount = response.data.totalBalance || 0;
           } else if (name === "Investment") {
-            currentAmount =
-              response.data.total ||
-              response.data.amount ||
-              response.data.investment ||
-              0;
+            currentAmount = response.data.total || response.data.amount || 0;
           } else if (name === "Expenses") {
-            currentAmount =
-              response.data.total ||
-              response.data.amount ||
-              response.data.expense ||
-              0;
+            // For expenses, sum up all amounts from the array
+            if (Array.isArray(response.data)) {
+              currentAmount = response.data.reduce(
+                (sum: number, expense: any) => sum + (expense.amount || 0),
+                0
+              );
+            } else {
+              currentAmount = response.data.total || response.data.amount || 0;
+            }
           } else if (name === "Savings") {
-            currentAmount =
-              response.data.total ||
-              response.data.amount ||
-              response.data.savings ||
-              0;
+            currentAmount = response.data.total || response.data.amount || 0;
           }
 
           setAmount(currentAmount);
@@ -1140,53 +1132,43 @@ function Dashboard() {
                   }}
                 >
                   <CardHeader sx={{ pb: 2 }}>
-                    <Box
+                    <Typography
+                      variant={isMobile ? "h6" : "h5"}
+                      sx={{ fontWeight: 600, color: "#1e293b", mb: 1 }}
+                    >
+                      📊 Financial Overview - Monthly Trends
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#64748b", fontSize: "0.875rem", mb: 2 }}
+                    >
+                      Compare your income, expenses, savings, and investments
+                      across months
+                    </Typography>
+                    <Tabs
+                      value={activeTab}
+                      onChange={(_, newValue) => setActiveTab(newValue)}
                       sx={{
-                        display: "flex",
-                        alignItems: isMobile ? "flex-start" : "center",
-                        justifyContent: "space-between",
-                        flexDirection: isMobile ? "column" : "row",
-                        gap: isMobile ? 2 : 0,
+                        background: "rgba(255, 255, 255, 0.6)",
+                        backdropFilter: "blur(10px)",
+                        borderRadius: "8px",
+                        minHeight: "auto",
+                        "& .MuiTab-root": {
+                          minHeight: "auto",
+                          py: 1,
+                          px: isMobile ? 1.5 : 2,
+                          fontSize: isMobile ? "0.75rem" : "0.875rem",
+                          fontWeight: 500,
+                        },
+                        "& .MuiTabs-indicator": {
+                          backgroundColor: "#3b82f6",
+                        },
                       }}
                     >
-                      <Typography
-                        variant={isMobile ? "h6" : "h5"}
-                        sx={{ fontWeight: 600, color: "#1e293b" }}
-                      >
-                        Financial Overview - Monthly Trends
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "#64748b", fontSize: "0.875rem", mt: 0.5 }}
-                      >
-                        Compare your income, expenses, savings, and investments
-                        across months
-                      </Typography>
-                      <Tabs
-                        value={activeTab}
-                        onChange={(_, newValue) => setActiveTab(newValue)}
-                        sx={{
-                          background: "rgba(255, 255, 255, 0.6)",
-                          backdropFilter: "blur(10px)",
-                          borderRadius: "8px",
-                          minHeight: "auto",
-                          "& .MuiTab-root": {
-                            minHeight: "auto",
-                            py: 1,
-                            px: isMobile ? 1.5 : 2,
-                            fontSize: isMobile ? "0.75rem" : "0.875rem",
-                            fontWeight: 500,
-                          },
-                          "& .MuiTabs-indicator": {
-                            backgroundColor: "#3b82f6",
-                          },
-                        }}
-                      >
-                        <Tab label="Overview" />
-                        <Tab label="Income" />
-                        <Tab label="Expenses" />
-                      </Tabs>
-                    </Box>
+                      <Tab label="Overview" />
+                      <Tab label="Income" />
+                      <Tab label="Expenses" />
+                    </Tabs>
                   </CardHeader>
                   <CardContent>
                     <Box sx={{ height: isMobile ? 250 : 320 }}>
@@ -1292,16 +1274,16 @@ function Dashboard() {
                   <CardHeader sx={{ pb: 2 }}>
                     <Typography
                       variant={isMobile ? "h6" : "h5"}
-                      sx={{ fontWeight: 600, color: "#1e293b" }}
+                      sx={{ fontWeight: 600, color: "#1e293b", mb: 1 }}
                     >
-                      Activity Trends - Income vs Expenses
+                      📈 Activity Trends - Income vs Expenses
                     </Typography>
                     <Typography
                       variant="body2"
-                      sx={{ color: "#64748b", fontSize: "0.875rem", mt: 0.5 }}
+                      sx={{ color: "#64748b", fontSize: "0.875rem" }}
                     >
                       Track your monthly income, expenses, investments, and
-                      payment activities
+                      payment activities over time
                     </Typography>
                   </CardHeader>
                   <CardContent>
