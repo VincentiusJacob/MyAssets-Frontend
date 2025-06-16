@@ -188,6 +188,7 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
             >
               {name}
             </Typography>
+            <h2> {name} </h2>
 
             <Typography
               variant="caption"
