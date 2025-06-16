@@ -182,12 +182,6 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
           }}
         >
           <Box>
-            <Typography
-              variant="body2"
-              sx={{ color: "#64748b", fontWeight: 600, fontSize: "0.875rem" }}
-            >
-              {name}
-            </Typography>
             <h2> {name} </h2>
 
             <Typography
@@ -282,6 +276,7 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
 
           {amount === 0 ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <h2> {name} </h2>
               <Typography
                 variant="caption"
                 sx={{ color: "#94a3b8", fontSize: "0.75rem" }}
@@ -294,6 +289,7 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
             </Box>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <h2> {name} </h2>
               <Box
                 sx={{
                   display: "flex",
