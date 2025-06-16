@@ -102,12 +102,38 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
 
           // Fetch current amount
           const response = await axios.get(apiEndpoint);
-          const currentAmount =
-            response.data.amount ||
-            response.data.total ||
-            response.data.balance ||
-            0;
+          let currentAmount = 0;
+
+          // Handle different API response structures
+          if (name === "Balance") {
+            currentAmount =
+              response.data.balance ||
+              response.data.amount ||
+              response.data.total ||
+              0;
+          } else if (name === "Investment") {
+            currentAmount =
+              response.data.total ||
+              response.data.amount ||
+              response.data.investment ||
+              0;
+          } else if (name === "Expenses") {
+            currentAmount =
+              response.data.total ||
+              response.data.amount ||
+              response.data.expense ||
+              0;
+          } else if (name === "Savings") {
+            currentAmount =
+              response.data.total ||
+              response.data.amount ||
+              response.data.savings ||
+              0;
+          }
+
           setAmount(currentAmount);
+          console.log(`${name} API Response:`, response.data);
+          console.log(`${name} Current Amount:`, currentAmount);
 
           // Calculate trend (simplified for now)
           setChange(Math.floor(Math.random() * 15) + 1); // Random change for demo
@@ -1127,7 +1153,14 @@ function Dashboard() {
                         variant={isMobile ? "h6" : "h5"}
                         sx={{ fontWeight: 600, color: "#1e293b" }}
                       >
-                        Financial Overview
+                        Financial Overview - Monthly Trends
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "#64748b", fontSize: "0.875rem", mt: 0.5 }}
+                      >
+                        Compare your income, expenses, savings, and investments
+                        across months
                       </Typography>
                       <Tabs
                         value={activeTab}
@@ -1261,14 +1294,14 @@ function Dashboard() {
                       variant={isMobile ? "h6" : "h5"}
                       sx={{ fontWeight: 600, color: "#1e293b" }}
                     >
-                      Monthly Activity Trends
+                      Activity Trends - Income vs Expenses
                     </Typography>
                     <Typography
                       variant="body2"
                       sx={{ color: "#64748b", fontSize: "0.875rem", mt: 0.5 }}
                     >
-                      Track your income, expenses, investments, and payments
-                      over time
+                      Track your monthly income, expenses, investments, and
+                      payment activities
                     </Typography>
                   </CardHeader>
                   <CardContent>
