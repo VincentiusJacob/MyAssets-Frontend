@@ -82,7 +82,6 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
         try {
           let apiEndpoint = "";
 
-          // Set the correct API endpoint based on card name
           switch (name) {
             case "Balance":
               apiEndpoint = `https://myassets-backend.vercel.app/api/balance/${username}`;
@@ -100,17 +99,14 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
               apiEndpoint = `https://myassets-backend.vercel.app/api/balance/${username}`;
           }
 
-          // Fetch current amount
           const response = await axios.get(apiEndpoint);
           let currentAmount = 0;
 
-          // Handle different API response structures
           if (name === "Balance") {
             currentAmount = response.data.totalBalance || 0;
           } else if (name === "Investment") {
             currentAmount = response.data.total || response.data.amount || 0;
           } else if (name === "Expenses") {
-            // For expenses, sum up all amounts from the array
             if (Array.isArray(response.data)) {
               currentAmount = response.data.reduce(
                 (sum: number, expense: any) => sum + (expense.amount || 0),
@@ -124,11 +120,8 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
           }
 
           setAmount(currentAmount);
-          console.log(`${name} API Response:`, response.data);
-          console.log(`${name} Current Amount:`, currentAmount);
 
-          // Calculate trend (simplified for now)
-          setChange(Math.floor(Math.random() * 15) + 1); // Random change for demo
+          setChange(Math.floor(Math.random() * 15) + 1);
           setTrend(Math.random() > 0.5 ? "up" : "down");
         } catch (error) {
           console.error(`Error fetching ${name} amount:`, error);
@@ -195,6 +188,7 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
             >
               {name}
             </Typography>
+
             <Typography
               variant="caption"
               sx={{ color: "#94a3b8", fontSize: "0.75rem" }}
@@ -288,18 +282,13 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
           {amount === 0 ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Typography
-                variant="body2"
-                sx={{ color: "#64748b", fontWeight: 600, fontSize: "0.875rem" }}
+                variant="caption"
+                sx={{ color: "#94a3b8", fontSize: "0.75rem" }}
               >
-                {amount > 0 && name}
-                {amount === 0 && name === "Balance" && "Balance"}
-                {amount === 0 &&
-                  name === "Investment" &&
-                  "Start Investing Today"}
-                {amount === 0 && name === "Expenses" && "No Expenses Recorded"}
-                {amount === 0 &&
-                  name === "Savings" &&
-                  "Begin Your Savings Journey"}
+                {name === "Balance" && "Add funds to get started"}
+                {name === "Investment" && "Start investing today"}
+                {name === "Expenses" && "No expenses recorded"}
+                {name === "Savings" && "Begin your savings journey"}
               </Typography>
             </Box>
           ) : (
