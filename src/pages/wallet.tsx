@@ -29,7 +29,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 interface Payment {
-  id: string;
+  payment_id: string;
   payment_name: string;
   amount_due: number;
   status: string;
@@ -108,7 +108,7 @@ function Wallet() {
       const response = await axios.post(
         "https://myassets-backend.vercel.app/payOutstandingPayment",
         {
-          payment_id: selectedPayment.id,
+          payment_id: selectedPayment.payment_id,
           amount_to_pay: payAmount,
           username: username,
         }
@@ -189,7 +189,7 @@ function Wallet() {
                     (payment.amount_paid / payment.amount_due) * 100;
                   return (
                     <motion.div
-                      key={payment.id}
+                      key={payment.payment_id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                     >
