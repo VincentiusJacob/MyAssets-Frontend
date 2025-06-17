@@ -2,7 +2,16 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import { Plus, X } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Plus,
+  X,
+  TrendingUp,
+  TrendingDown,
+  PiggyBank,
+  CreditCard,
+  DollarSign,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -18,6 +27,17 @@ import {
   Container,
   Grid,
   Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  Pagination,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -73,8 +93,38 @@ const modalStyle = {
   p: 4,
 };
 
+// Helper Functions for Styling
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case "Income":
+      return <TrendingUp size={18} />;
+    case "Expense":
+      return <TrendingDown size={18} />;
+    case "Savings":
+      return <PiggyBank size={18} />;
+    case "Investment":
+      return <CreditCard size={18} />;
+    default:
+      return <DollarSign size={18} />;
+  }
+};
+
+const getCategoryColor = (category: string) => {
+  switch (category) {
+    case "Income":
+      return "success";
+    case "Expense":
+      return "error";
+    case "Savings":
+      return "primary";
+    case "Investment":
+      return "warning";
+    default:
+      return "default";
+  }
+};
+
 function TransactionPage() {
-  // const [transactionData, setTransactionData] = useState<Transaction[]>([]); // <-- DIHAPUS
   const [filteredData, setFilteredData] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -94,6 +144,11 @@ function TransactionPage() {
     description: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md")); // <-- SEKARANG AKAN DIGUNAKAN
   const getUser = localStorage.getItem("data");
 
   const fetchData = async () => {
@@ -107,12 +162,16 @@ function TransactionPage() {
       const res = await axios.get(
         `https://myassets-backend.vercel.app/getTransaction/${username}`
       );
-      const formatted = res.data.map((t: any) => ({
-        ...t,
-        date: new Date(t.date).toLocaleDateString("en-CA"),
-        amount: parseFloat(t.amount) || 0,
-      }));
-      // setTransactionData(formatted); // <-- DIHAPUS
+      const formatted = res.data
+        .map((t: any) => ({
+          ...t,
+          date: new Date(t.date).toLocaleDateString("en-CA"),
+          amount: parseFloat(t.amount) || 0,
+        }))
+        .sort(
+          (a: Transaction, b: Transaction) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
       setFilteredData(formatted);
     } catch (err) {
       console.error("Error fetching transactions:", err);
@@ -125,6 +184,20 @@ function TransactionPage() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // === PERBAIKAN DI SINI ===
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
+  };
 
   const handleTransactionChange = (e: any) => {
     const { name, value } = e.target;
@@ -206,8 +279,14 @@ function TransactionPage() {
       }}
     >
       <Container maxWidth="xl">
-        <Typography variant="h3">Transaction Management</Typography>
-        <Box sx={{ my: 4, display: "flex", gap: 2 }}>
+        <Typography variant="h3" gutterBottom>
+          Transaction Management
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          Track, manage, and analyze your financial transactions
+        </Typography>
+
+        <Box sx={{ my: 4, display: "flex", gap: 2, flexWrap: "wrap" }}>
           <Button
             variant="contained"
             onClick={() => setTransactionModalOpen(true)}
@@ -224,17 +303,157 @@ function TransactionPage() {
             Create Payment
           </Button>
         </Box>
-        <Card>
+
+        <Card
+          sx={{ background: "rgba(255, 255, 255, 0.8)", borderRadius: "16px" }}
+        >
           <CardContent>
             {isLoading ? (
-              <p>Loading transactions...</p>
-            ) : filteredData.length > 0 ? (
-              <p>{filteredData.length} transactions found.</p>
+              <Typography textAlign="center" p={5}>
+                Loading transactions...
+              </Typography>
+            ) : !filteredData || filteredData.length === 0 ? (
+              <Typography textAlign="center" p={5}>
+                No transactions found.
+              </Typography>
+            ) : // === PERBAIKAN DI SINI: TAMPILAN RESPONSIVE ===
+            isMobile ? (
+              // Tampilan Kartu untuk Mobile
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {paginatedData.map((row) => (
+                  <motion.div
+                    key={row.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                  >
+                    <Card variant="outlined">
+                      <CardContent>
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Typography variant="h6">{row.title}</Typography>
+                          <Chip
+                            icon={getCategoryIcon(row.category)}
+                            label={row.category}
+                            color={getCategoryColor(row.category)}
+                            size="small"
+                          />
+                        </Box>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          noWrap
+                          sx={{ my: 1 }}
+                        >
+                          {row.description}
+                        </Typography>
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Typography variant="caption" color="text.secondary">
+                            {row.date}
+                          </Typography>
+                          <Typography
+                            color={
+                              row.category === "Income"
+                                ? "success.main"
+                                : "error.main"
+                            }
+                            fontWeight="bold"
+                          >
+                            {row.category === "Income" ? "+" : "-"}$
+                            {row.amount.toLocaleString()}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </Box>
             ) : (
-              <p>No transactions found.</p>
+              // Tampilan Tabel untuk Desktop
+              <TableContainer
+                component={Paper}
+                sx={{ borderRadius: "12px", background: "transparent" }}
+              >
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow
+                      sx={{
+                        "& .MuiTableCell-root": {
+                          fontWeight: "bold",
+                          background: "rgba(0,0,0,0.02)",
+                        },
+                      }}
+                    >
+                      <TableCell>Title</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Category</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell align="right">Amount</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {paginatedData.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.title}
+                        </TableCell>
+                        <TableCell sx={{ maxWidth: 200 }}>
+                          {row.description}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            icon={getCategoryIcon(row.category)}
+                            label={row.category}
+                            color={getCategoryColor(row.category)}
+                            size="small"
+                            variant="outlined"
+                          />
+                        </TableCell>
+                        <TableCell>{row.date}</TableCell>
+                        <TableCell align="right">
+                          <Typography
+                            color={
+                              row.category === "Income"
+                                ? "success.main"
+                                : "error.main"
+                            }
+                            fontWeight="500"
+                          >
+                            {row.category === "Income" ? "+" : "-"}$
+                            {row.amount.toLocaleString()}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )}
           </CardContent>
+          {totalPages > 1 && (
+            <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </Box>
+          )}
         </Card>
+
+        {/* Modals */}
         <Modal
           open={isTransactionModalOpen}
           onClose={() => setTransactionModalOpen(false)}
