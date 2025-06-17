@@ -56,6 +56,7 @@ import axios from "axios";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 // Cards Component
+// Cards Component
 interface CardsProps {
   name: string;
   icon: React.ReactNode;
@@ -73,112 +74,109 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // --- PERUBAHAN 2: LOGIKA BALANCE DIPERBAIKI ---
   useEffect(() => {
     const fetchAmount = async () => {
       const getUser = localStorage.getItem("data");
-      if (getUser) {
-        const parseData = JSON.parse(getUser);
-        const username = parseData.username;
+      if (!getUser) return;
 
-        try {
-          // Jika kartu adalah "Balance", hitung secara dinamis
-          if (name === "Balance") {
-            const [
-              incomeResponse,
-              expenseResponse,
-              investmentResponse,
-              savingsResponse,
-            ] = await Promise.all([
-              axios.get(
-                `https://myassets-backend.vercel.app/api/balance/${username}`
-              ), // Asumsi endpoint ini mengembalikan total PENDAPATAN
-              axios.get(
-                `https://myassets-backend.vercel.app/api/expenseData/${username}`
-              ),
-              axios.get(
-                `https://myassets-backend.vercel.app/api/invest/${username}`
-              ),
-              axios.get(
-                `https://myassets-backend.vercel.app/api/savings/${username}`
-              ),
-            ]);
+      const parseData = JSON.parse(getUser);
+      const username = parseData.username;
 
-            const totalIncome = incomeResponse.data.totalBalance || 0;
+      try {
+        if (name === "Balance") {
+          // --- LOGIKA PERHITUNGAN BALANCE YANG LEBIH AMAN ---
+          const [
+            incomeResponse,
+            expenseResponse,
+            investmentResponse,
+            savingsResponse,
+          ] = await Promise.all([
+            axios.get(
+              `https://myassets-backend.vercel.app/api/balance/${username}`
+            ),
+            axios.get(
+              `https://myassets-backend.vercel.app/api/expenseData/${username}`
+            ),
+            axios.get(
+              `https://myassets-backend.vercel.app/api/invest/${username}`
+            ),
+            axios.get(
+              `https://myassets-backend.vercel.app/api/savings/${username}`
+            ),
+          ]);
 
-            let totalExpenses = 0;
-            if (Array.isArray(expenseResponse.data)) {
-              totalExpenses = expenseResponse.data.reduce(
-                (sum: number, expense: any) => sum + (expense.amount || 0),
-                0
-              );
-            } else {
-              totalExpenses =
-                expenseResponse.data.total || expenseResponse.data.amount || 0;
-            }
+          // Cek beberapa kemungkinan properti untuk memastikan kita dapat nilainya
+          const totalIncome =
+            incomeResponse.data?.totalBalance ||
+            incomeResponse.data?.total ||
+            0;
 
-            const totalInvestment =
-              investmentResponse.data.total ||
-              investmentResponse.data.amount ||
-              0;
-            const totalSavings =
-              savingsResponse.data.total || savingsResponse.data.amount || 0;
-
-            const finalBalance =
-              totalIncome - (totalExpenses + totalInvestment + totalSavings);
-            setAmount(finalBalance);
+          let totalExpenses = 0;
+          if (Array.isArray(expenseResponse.data)) {
+            totalExpenses = expenseResponse.data.reduce(
+              (sum: number, expense: any) => sum + (expense.amount || 0),
+              0
+            );
           } else {
-            // Logika untuk kartu lain (Investment, Expenses, Savings) tetap sama
-            let apiEndpoint = "";
-            switch (name) {
-              case "Investment":
-                apiEndpoint = `https://myassets-backend.vercel.app/api/invest/${username}`;
-                break;
-              case "Expenses":
-                apiEndpoint = `https://myassets-backend.vercel.app/api/expenseData/${username}`;
-                break;
-              case "Savings":
-                apiEndpoint = `https://myassets-backend.vercel.app/api/savings/${username}`;
-                break;
-              default:
-                // This case should not be hit if Balance is handled above, but as a fallback:
-                apiEndpoint = `https://myassets-backend.vercel.app/api/balance/${username}`;
-            }
-
-            const response = await axios.get(apiEndpoint);
-            let currentAmount = 0;
-
-            if (name === "Expenses") {
-              if (Array.isArray(response.data)) {
-                currentAmount = response.data.reduce(
-                  (sum: number, expense: any) => sum + (expense.amount || 0),
-                  0
-                );
-              } else {
-                currentAmount =
-                  response.data.total || response.data.amount || 0;
-              }
-            } else {
-              // For Investment and Savings
-              currentAmount = response.data.total || response.data.amount || 0;
-            }
-            setAmount(currentAmount);
+            totalExpenses =
+              expenseResponse.data?.total || expenseResponse.data?.amount || 0;
           }
 
-          // Random change percentage (can be kept or removed)
-          setChange(Math.floor(Math.random() * 15) + 1);
-          setTrend(Math.random() > 0.5 ? "up" : "down");
-        } catch (error) {
-          console.error(`Error fetching ${name} amount:`, error);
-          setAmount(0); // Set to 0 on error
+          const totalInvestment =
+            investmentResponse.data?.total ||
+            investmentResponse.data?.amount ||
+            0;
+          const totalSavings =
+            savingsResponse.data?.total || savingsResponse.data?.amount || 0;
+
+          const finalBalance =
+            totalIncome - (totalExpenses + totalInvestment + totalSavings);
+          setAmount(finalBalance);
+        } else {
+          // Logika untuk kartu lain (Investment, Expenses, Savings)
+          let apiEndpoint = "";
+          switch (name) {
+            case "Investment":
+              apiEndpoint = `https://myassets-backend.vercel.app/api/invest/${username}`;
+              break;
+            case "Expenses":
+              apiEndpoint = `https://myassets-backend.vercel.app/api/expenseData/${username}`;
+              break;
+            case "Savings":
+              apiEndpoint = `https://myassets-backend.vercel.app/api/savings/${username}`;
+              break;
+            default:
+              return;
+          }
+
+          const response = await axios.get(apiEndpoint);
+          let currentAmount = 0;
+
+          if (name === "Expenses" && Array.isArray(response.data)) {
+            currentAmount = response.data.reduce(
+              (sum: number, expense: any) => sum + (expense.amount || 0),
+              0
+            );
+          } else {
+            // Untuk Investment, Savings, dan format lain dari Expenses
+            currentAmount = response.data?.total || response.data?.amount || 0;
+          }
+          setAmount(currentAmount);
         }
+
+        // Ini bisa kamu sesuaikan atau hapus jika tidak perlu
+        setChange(Math.floor(Math.random() * 15) + 1);
+        setTrend(Math.random() > 0.5 ? "up" : "down");
+      } catch (error) {
+        console.error(`Error fetching ${name} amount:`, error);
+        setAmount(0);
       }
     };
 
     fetchAmount();
   }, [name]);
-  // --- AKHIR PERUBAHAN 2 ---
 
+  // ... sisa JSX dari komponen Cards tidak perlu diubah ...
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -331,41 +329,43 @@ const Cards: React.FC<CardsProps> = ({ name, icon }) => {
               </Typography>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 0.5,
-                  color: trend === "up" ? "#10b981" : "#ef4444",
-                  backgroundColor:
-                    trend === "up"
-                      ? "rgba(16, 185, 129, 0.1)"
-                      : "rgba(239, 68, 68, 0.1)",
-                  px: 1,
-                  py: 0.5,
-                  borderRadius: "6px",
-                }}
-              >
-                {trend === "up" ? (
-                  <ArrowUpRight size={12} />
-                ) : (
-                  <ArrowDownRight size={12} />
-                )}
+            name !== "Balance" && (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    color: trend === "up" ? "#10b981" : "#ef4444",
+                    backgroundColor:
+                      trend === "up"
+                        ? "rgba(16, 185, 129, 0.1)"
+                        : "rgba(239, 68, 68, 0.1)",
+                    px: 1,
+                    py: 0.5,
+                    borderRadius: "6px",
+                  }}
+                >
+                  {trend === "up" ? (
+                    <ArrowUpRight size={12} />
+                  ) : (
+                    <ArrowDownRight size={12} />
+                  )}
+                  <Typography
+                    variant="caption"
+                    sx={{ fontWeight: 700, fontSize: "0.75rem" }}
+                  >
+                    {change}%
+                  </Typography>
+                </Box>
                 <Typography
                   variant="caption"
-                  sx={{ fontWeight: 700, fontSize: "0.75rem" }}
+                  sx={{ color: "#64748b", fontSize: "0.75rem" }}
                 >
-                  {change}%
+                  vs last month
                 </Typography>
               </Box>
-              <Typography
-                variant="caption"
-                sx={{ color: "#64748b", fontSize: "0.75rem" }}
-              >
-                vs last month
-              </Typography>
-            </Box>
+            )
           )}
         </CardContent>
       </Card>
