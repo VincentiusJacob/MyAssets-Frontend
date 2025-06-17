@@ -44,6 +44,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { CSVLink } from "react-csv"; // <-- 1. IMPORT CSVLINK
 
 interface Transaction {
   id: string;
@@ -51,6 +52,7 @@ interface Transaction {
   amount: number;
   category: "Income" | "Expense" | "Savings" | "Investment";
   date: string;
+  description?: string; // Tambahkan deskripsi
 }
 
 const StatCard = ({
@@ -137,6 +139,7 @@ function Dashboard() {
   const [totalSavings, setTotalSavings] = useState(0);
   const [totalInvestment, setTotalInvestment] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
+  const [exportData, setExportData] = useState<Transaction[]>([]); // <-- 2. STATE BARU UNTUK DATA EXPORT
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -144,7 +147,17 @@ function Dashboard() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  // <-- 3. DEFINISIKAN HEADER UNTUK CSV -->
+  const headers = [
+    { label: "Date", key: "date" },
+    { label: "Category", key: "category" },
+    { label: "Title", key: "title" },
+    { label: "Description", key: "description" },
+    { label: "Amount", key: "amount" },
+  ];
+
   const calculateFinancials = (transactions: Transaction[]) => {
+    // ... (logic tidak berubah)
     const income = transactions
       .filter((t) => t.category === "Income")
       .reduce((sum, t) => sum + t.amount, 0);
@@ -157,12 +170,10 @@ function Dashboard() {
     const investment = transactions
       .filter((t) => t.category === "Investment")
       .reduce((sum, t) => sum + t.amount, 0);
-
     setTotalExpense(expense);
     setTotalSavings(savings);
     setTotalInvestment(investment);
     setBalance(income - expense - savings - investment);
-
     const monthlyData: {
       [key: string]: {
         income: number;
@@ -188,7 +199,6 @@ function Dashboard() {
     monthNames.forEach((m) => {
       monthlyData[m] = { income: 0, expense: 0, savings: 0, investment: 0 };
     });
-
     transactions.forEach((t) => {
       const month = monthNames[new Date(t.date).getMonth()];
       if (monthlyData[month]) {
@@ -217,6 +227,7 @@ function Dashboard() {
         (t: any) => ({ ...t, amount: parseFloat(t.amount) || 0 })
       );
       calculateFinancials(formattedTransactions);
+      setExportData(formattedTransactions); // <-- ISI STATE EXPORT DENGAN DATA TRANSAKSI
     } catch (error) {
       console.error("Error fetching transaction data:", error);
     } finally {
@@ -287,9 +298,19 @@ function Dashboard() {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Button variant="outlined" startIcon={<Download size={16} />}>
-              Export
-            </Button>
+            {/* --- 4. BUNGKUS TOMBOL EXPORT DENGAN CSVLINK --- */}
+            <CSVLink
+              data={exportData}
+              headers={headers}
+              filename={"myassets_transactions.csv"}
+              style={{ textDecoration: "none" }}
+              target="_blank"
+            >
+              <Button variant="outlined" startIcon={<Download size={16} />}>
+                Export
+              </Button>
+            </CSVLink>
+
             <IconButton onClick={fetchTransactionData}>
               <RefreshCw />
             </IconButton>
