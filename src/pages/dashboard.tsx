@@ -43,6 +43,7 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 interface Transaction {
   id: string;
@@ -62,7 +63,6 @@ const StatCard = ({
   amount: number;
 }) => {
   const [showValue, setShowValue] = useState(true);
-
   const formatCurrency = (value: number) => `$${value.toLocaleString()}`;
   const cardColors = {
     Balance: "linear-gradient(135deg, #3b82f6, #2563eb)",
@@ -130,21 +130,19 @@ const StatCard = ({
 };
 
 function Dashboard() {
-  // const [allTransactions, setAllTransactions] = useState<Transaction[]>([]); // <-- DIHAPUS
+  const { userProfile, isLoading: isUserLoading } = useUser();
+
   const [balance, setBalance] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
   const [totalInvestment, setTotalInvestment] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentUserProfile, setCurrentUserProfile] = useState<any>(null);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const getUser = localStorage.getItem("data");
-  const currentUsername = getUser ? JSON.parse(getUser).username : "User";
 
   const calculateFinancials = (transactions: Transaction[]) => {
     const income = transactions
@@ -201,7 +199,6 @@ function Dashboard() {
           monthlyData[month].investment += t.amount;
       }
     });
-
     const finalChartData = monthNames.map((m) => ({
       month: m,
       ...monthlyData[m],
@@ -209,43 +206,29 @@ function Dashboard() {
     setChartData(finalChartData);
   };
 
-  const fetchData = async (showLoading = true) => {
-    if (showLoading) setIsLoading(true);
-    if (!getUser) {
-      setIsLoading(false);
-      return;
-    }
-    const username = JSON.parse(getUser).username;
+  const fetchTransactionData = async () => {
+    if (!userProfile) return;
+    setIsDataLoading(true);
     try {
-      const [profileRes, transactionRes] = await Promise.all([
-        axios.get(
-          `https://myassets-backend.vercel.app/getUserProfile/${username}`
-        ),
-        axios.get(
-          `https://myassets-backend.vercel.app/getTransaction/${username}`
-        ),
-      ]);
-
-      setCurrentUserProfile(profileRes.data[0]);
-
-      const formattedTransactions: Transaction[] = transactionRes.data.map(
-        (t: any) => ({
-          ...t,
-          amount: parseFloat(t.amount) || 0,
-        })
+      const transactionRes = await axios.get(
+        `https://myassets-backend.vercel.app/getTransaction/${userProfile.username}`
       );
-      // setAllTransactions(formattedTransactions); // <-- DIHAPUS
+      const formattedTransactions: Transaction[] = transactionRes.data.map(
+        (t: any) => ({ ...t, amount: parseFloat(t.amount) || 0 })
+      );
       calculateFinancials(formattedTransactions);
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.error("Error fetching transaction data:", error);
     } finally {
-      if (showLoading) setIsLoading(false);
+      setIsDataLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (userProfile) {
+      fetchTransactionData();
+    }
+  }, [userProfile]);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
@@ -260,7 +243,7 @@ function Dashboard() {
     handleMenuClose();
   };
 
-  if (isLoading) {
+  if (isUserLoading || isDataLoading) {
     return (
       <Box
         sx={{
@@ -297,7 +280,7 @@ function Dashboard() {
         >
           <Box>
             <Typography variant={isMobile ? "h4" : "h3"} fontWeight={700}>
-              Welcome back, {currentUsername}! 👋
+              Welcome back, {userProfile?.username || "User"}! 👋
             </Typography>
             <Typography variant="h6" color="text.secondary">
               Here's what's happening with your finances today.
@@ -307,12 +290,12 @@ function Dashboard() {
             <Button variant="outlined" startIcon={<Download size={16} />}>
               Export
             </Button>
-            <IconButton onClick={() => fetchData(false)}>
+            <IconButton onClick={fetchTransactionData}>
               <RefreshCw />
             </IconButton>
             <IconButton onClick={handleMenuClick}>
-              <Avatar src={currentUserProfile?.profilepicture || ""}>
-                {currentUsername[0]}
+              <Avatar src={userProfile?.profilepicture || ""}>
+                {userProfile?.username?.[0]}
               </Avatar>
             </IconButton>
             <Menu
